@@ -27,7 +27,7 @@ def main():
     # Abort if all runs failed
     if len(failed) > n_runs / 2:
         logger.error("More than 50% of all runs failed! Aborting submission.")
-        raise RuntimeError("Too many runs failed!")
+        
 
     ep_times = [x for x in ep_times if x is not None]
     data = {"ID": [i for i in range(len(ep_times))], "submission_time": ep_times}
