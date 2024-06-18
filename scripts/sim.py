@@ -34,8 +34,9 @@ logger = logging.getLogger(__name__)
 
 
 def simulate(
-    config: str = "config/getting_started.yaml",
-    controller: str = "src/my_controller.py",
+    config: str = "config/level3.yaml",
+    controller: str = "src/my_controller_cpp.py",
+   #controller: str = "examples/controller.py",
     n_runs: int = 1,
     gui: bool = True,
     terminate_on_lap: bool = True,
@@ -178,6 +179,7 @@ def log_episode_stats(stats: dict, info: dict, config: Munch, curr_time: float, 
         (
             f"Flight time (s): {curr_time}\n"
             f"Reason for termination: {termination}\n"
+            f"Collision info: {info['collision']}\n"
             f"Gates passed: {stats['gates_passed']}\n"
             f"Total reward: {stats['ep_reward']}\n"
             f"Number of collisions: {stats['collisions']}\n"

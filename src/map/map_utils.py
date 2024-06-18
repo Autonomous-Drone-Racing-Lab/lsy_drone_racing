@@ -29,15 +29,16 @@ class Ray:
 
 
 class OBB:
-    def __init__(self, center: np.ndarray, half_sizes:np.ndarray, rotation_matrix:np.ndarray):
+    def __init__(self, center: np.ndarray, half_sizes:np.ndarray, rotation_matrix:np.ndarray, type="collision"):
         self.center = center.astype(float)
         self.half_sizes = half_sizes.astype(float)
         self.rotation_matrix = rotation_matrix.astype(float)
+        self.type = type
 
     def __repr__(self):
-        return f"OBB(center={self.center}, half_sizes={self.half_sizes}, rotation={self.rotation_matrix})"
+        return f"OBB(center={self.center}, half_sizes={self.half_sizes}, rotation={self.rotation_matrix}, type={self.type})"
     
-    def check_collision_with_ray(self, ray: Ray, drone_radius=0):
+    def check_collision_with_ray(self, ray: Ray, drone_radius):
         # Transform the ray into the OBB's local coordinate system
         local_start = np.dot(ray.start - self.center, self.rotation_matrix)
         local_end = np.dot(ray.end - self.center, self.rotation_matrix)
@@ -46,7 +47,11 @@ class OBB:
         t_min = 0 # start of the ray
         t_max = 1 # end of the ray
 
-        inflated_half_sizes = self.half_sizes + drone_radius
+        if self.type == "filling":
+            inflated_half_sizes = self.half_sizes
+        else:
+            inflated_half_sizes = self.half_sizes + drone_radius
+        
         box_min = -inflated_half_sizes
         box_max = inflated_half_sizes
 
@@ -70,6 +75,14 @@ class OBB:
                 if t_min > t_max:
                     return False
         return 0 <= t_min <= 1 and 0 <= t_max <= 1
+    
+    def check_collision_with_point(self, point: np.ndarray):
+        # Transform the point into the OBB's local coordinate system
+        local_point = np.dot(point - self.center, self.rotation_matrix)
+        for i in range(3):
+            if abs(local_point[i]) > self.half_sizes[i]:
+                return False
+        return True
 
 
     def plot(self, ax):
@@ -91,10 +104,13 @@ class OBB:
                  [corners[i] for i in [0,1,5,4]], [corners[i] for i in [2,3,7,6]], 
                  [corners[i] for i in [1,2,6,5]], [corners[i] for i in [0,3,7,4]]]
 
+        face_color = 'cyan' if self.type == "collision" else 'green'
+        edge_color = 'r' if self.type == "collision" else 'g'
+        
         # Plot each polygon of the box
         for edge in edges:
             xs, ys, zs = zip(*edge)
-            ax.add_collection3d(Poly3DCollection([list(zip(xs, ys, zs))], facecolors='cyan', linewidths=1, edgecolors='r', alpha=.25))
+            ax.add_collection3d(Poly3DCollection([list(zip(xs, ys, zs))], facecolors=face_color, linewidths=1, edgecolors=edge_color, alpha=.25))
 
 
 class Object:
@@ -109,8 +125,9 @@ class Object:
         for _, part in component.items():
             center = np.array(part['position'])
             half_sizes = np.array(part['size']) / 2
+            type = part['type']
             rotation_matrix = np.eye(3)  # No rotation initially
-            object.add_obb(OBB(center, half_sizes, rotation_matrix))
+            object.add_obb(OBB(center, half_sizes, rotation_matrix, type=type))
         
         return object
 
@@ -119,7 +136,6 @@ class Object:
 
     def translate(self, vector: np.ndarray):
         """Translates the whole object and its components."""
-        print(vector)
         self.global_center += vector
         for obb in self.obbs:
             obb.center += vector
