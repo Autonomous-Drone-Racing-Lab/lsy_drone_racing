@@ -1,0 +1,115 @@
+gate_id_to_name_mapping:
+  1: small_portal
+  0: large_portal
+
+component_geometry:
+  large_portal:
+    support:
+      position: [0, 0, 0.3875]
+      size: [0.05, 0.05, 0.755]
+      type: collision
+      name: support
+    bottom_bar:
+      position: [0, 0, 0.75]
+      size: [0.55, 0.05, 0.05]
+      type: collision
+      name: bottom_bar
+    top_bar:
+      position: [0, 0, 1.25]
+      size: [0.55, 0.05, 0.05]
+      type: collision
+      name: top_bar
+    left_bar:
+      position: [-0.25, 0, 1]
+      size: [0.05, 0.05, 0.55]
+      type: collision
+      name: left_bar
+    right_bar:
+      position: [0.25, 0, 1]
+      size: [0.05, 0.05, 0.55]
+      type: collision
+      name: right_bar
+    filling:
+      position: [0, 0, 1.0]
+      size: [0.45, 0.00000001, 0.45]
+      type: filling
+      name: filling
+  small_portal:
+    support:
+      position: [0, 0, 0.15]
+      size: [0.05, 0.05, 0.3]
+      type: collision
+      name: support
+    bottom_bar:
+      position: [0, 0, 0.275]
+      size: [0.55, 0.05, 0.05]
+      type: collision
+      name: bottom_bar
+    top_bar:
+      position: [0, 0, 0.775]
+      size: [0.55, 0.05, 0.05]
+      type: collision
+      name: top_bar
+    left_bar:
+      position: [-0.25, 0, 0.525]
+      size: [0.05, 0.05, 0.55]
+      type: collision
+      name: left_bar
+    right_bar:
+      position: [0.25, 0, 0.525]
+      size: [0.05, 0.05, 0.55]
+      type: collision
+      name: right_bar
+    filling:
+      position: [0, 0, 0.525]
+      size: [0.45, 0.00000001, 0.45]
+      type: filling
+      name: filling
+  obstacle:
+    cylinder:
+      position: [0, 0, 0.525]
+      size: [0.1, 0.1, 1.05]
+      type: collision
+      name: obstacle
+
+general_properties:
+  takeoff_time: 0.5
+  takeoff_height: 0.2
+  keep_history: false
+
+component_properties:
+  large_portal:
+    height: 1
+  small_portal:
+    height: 0.525
+
+world_properties:
+  inflate_radius:
+    gate: 0.15
+    obstacle: 0.15
+  lower_bound: [-3, -3, 0]
+  upper_bound: [3, 3, 1.5]
+
+path_planner_properties:
+  time_limit_online: 0.3
+  time_limit_offline: 1.5
+  optimality_threshold_percentage: 0.05
+  checkpoint_gate_offset: 0.2
+  range: 0.7
+  pos_divergence_recalculate: 0.01
+  rot_divergence_recalculate: 0.01
+  min_dist_check_traj_collision: 0.1
+  min_dist_check_traj_passed_gate: 0.2
+  path_simplification: ompl
+  recalculate_online: False
+  advance_for_calculation: False
+  can_pass_gate: True
+
+trajectory_generator_properties:
+  type: optimal
+  max_time: 12
+  max_velocity: 2.4
+  max_acceleration: 1.5
+  sampling_interval: 0.05
+
+additional_statics_obstacles: []

@@ -27,6 +27,8 @@ Tips:
 
 from __future__ import annotations
 
+import yaml
+
 import numpy as np
 
 from lsy_drone_racing.command import Command
@@ -35,7 +37,6 @@ from lsy_drone_racing.utils import draw_traj_without_ref, remove_trajectory
 from online_traj_planner import OnlineTrajGenerator
 from src.utils.config_reader import ConfigReader
 from src.state_estimator import StateEstimator
-import json
 from enum import Enum
 
 class QuadrotorState(Enum):
@@ -80,9 +81,9 @@ class Controller(BaseController):
                 print(f"  {key}: {value}")
             
         # load config
-        self.config_path = "./config.json"
+        self.config_path = "./config.yaml"
         with open(self.config_path, "r") as f:
-            self.config = json.load(f)
+            self.config = yaml.safe_load(f)
         
         self.takeoff_height = self.config["general_properties"]["takeoff_height"]
         self.takeoff_time = self.config["general_properties"]["takeoff_time"]

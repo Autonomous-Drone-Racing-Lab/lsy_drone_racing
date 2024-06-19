@@ -35,7 +35,7 @@ from lsy_drone_racing.utils import draw_trajectory, draw_traj_without_ref, remov
 from online_traj_planner import OnlineTrajGenerator
 from src.utils.config_reader import ConfigReader
 from src.state_estimator import StateEstimator
-import json
+import yaml
 
 
 class Controller(BaseController):
@@ -72,9 +72,9 @@ class Controller(BaseController):
                 print(f"  {key}: {value}")
             
         # load config
-        config_path = "./config.json"
+        config_path = "./config.yaml"
         with open(config_path, "r") as f:
-            self.config = json.load(f)
+            self.config = yaml.safe_load(f)
 
         # Save environment and control parameters.
         self.initial_info = initial_info

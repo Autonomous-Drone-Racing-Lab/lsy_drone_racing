@@ -9,20 +9,20 @@ from src.map.map import Map
 from src.utils.config_reader import ConfigReader
 import numpy as np
 import matplotlib.pyplot as plt
-import json
+import yaml
 from src.utils.types import Gate, Obstacle
 
 
 if __name__ == "__main__":
-    config_path = "./config.json"
+    config_path = "./config.yaml"
     config_reader = ConfigReader.create(config_path=config_path)
 
 
     #task path
-    path = "./task.json"
+    path = "./task.yaml"
     # parse file
     with open(path) as f:
-        task = json.load(f)
+        task = yaml.safe_load(f)
     
 
     nominal_gates_pos_and_type = task["nominal_gates_pos_and_type"]

@@ -1,4 +1,4 @@
-import json
+import yaml
 from typing import Dict
 
 
@@ -28,7 +28,7 @@ class ConfigReader:
 
     def _read_config(self) -> Dict:
         with open(self.config_path, 'r') as f:
-            return json.load(f)
+            return yaml.safe_load(f)
 
     def get_gate_geometry_by_type(self, type_id: int):
         # convert int to string

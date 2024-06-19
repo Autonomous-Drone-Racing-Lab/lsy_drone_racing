@@ -79,7 +79,7 @@ class Controller(BaseController):
                 print(f"  {key}: {value}")
             
         # load config
-        self.config_reader = ConfigReader.create("./config.json")
+        self.config_reader = ConfigReader.create("./config.yaml")
 
         # Save environment and control parameters.
         self.initial_info = initial_info

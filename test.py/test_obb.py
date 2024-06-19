@@ -12,7 +12,7 @@ from src.utils.config_reader import ConfigReader
 
 
 if __name__ == "__main__":
-    config_path = "./config.json"
+    config_path = "./config.yaml"
     config_reader = ConfigReader.create(config_path=config_path)
     
     gate_type = 1
