@@ -232,8 +232,8 @@
     "trajectory_generator_properties": {
         "type": "optimal",
         "max_time": 12,
-        "max_velocity": 2,
-        "max_acceleration": 1.2,
+        "max_velocity": 2.8,
+        "max_acceleration": 1.9,
         "sampling_interval": 0.05
     },
     "additional_statics_obstacles": [
