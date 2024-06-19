@@ -1,3 +1,4 @@
+# Define the environment, gate positions, ... ----------------------
 gate_id_to_name_mapping:
   1: small_portal
   0: large_portal
@@ -72,10 +73,7 @@ component_geometry:
       type: collision
       name: obstacle
 
-general_properties:
-  takeoff_time: 0.5
-  takeoff_height: 0.2
-  keep_history: false
+
 
 component_properties:
   large_portal:
@@ -83,6 +81,18 @@ component_properties:
   small_portal:
     height: 0.525
 
+
+# End of the environment definition -------------------------------
+
+general_properties:
+  takeoff_time: 0.7
+  takeoff_height: 0.15
+  keep_history: false
+
+
+# In the world properties, we define how our reprsentation of the world in code should look like
+# The most important proerties are inflation radius. This radius states how much we inflate the volume around collision objects
+# This value should at lease be as large as the radius of the drone but making it lager will make out drone more robust
 world_properties:
   inflate_radius:
     gate: 0.15
@@ -90,26 +100,27 @@ world_properties:
   lower_bound: [-3, -3, 0]
   upper_bound: [3, 3, 1.5]
 
+# Properties definining how our C++ path planner works
 path_planner_properties:
-  time_limit_online: 0.3
-  time_limit_offline: 1.5
-  optimality_threshold_percentage: 0.05
-  checkpoint_gate_offset: 0.2
-  range: 0.7
-  pos_divergence_recalculate: 0.01
-  rot_divergence_recalculate: 0.01
-  min_dist_check_traj_collision: 0.1
-  min_dist_check_traj_passed_gate: 0.2
-  path_simplification: ompl
-  recalculate_online: False
-  advance_for_calculation: False
-  can_pass_gate: True
+  time_limit_online: 0.5 # time we give the planner to recompute a path during flight
+  time_limit_offline: 1.5 # Time we give the planner to compute a path before flight
+  optimality_threshold_percentage: 0.05 # value for ompl, we preemtively stop planning if path diverges from straight line path by less than 5%
+  checkpoint_gate_offset: 0.05 # we place additional checkpoints before and after each gate, this gives the distance
+  range: 0.7 # max length of straight line distance used in RRT* algorithm
+  min_dist_check_traj_collision: 0.1 # this is a custom inflation radius we use to check a trajectory for collision once we have new gate informatio, one strategy is to make this a bit smaller than the original ones
+  path_simplification: ompl # simplification method ompl works the best other values are none, and custom
+  recalculate_online: False # For sim purpose whether we block the main thread during recomputation
+  advance_for_calculation: False # For sim purpose, whether we advance trajectory for traj calculation time
+  can_pass_gate: true # whether our trajectory can pass gates, i.e. fly through a gates and back through it
 
 trajectory_generator_properties:
-  type: optimal
-  max_time: 12
-  max_velocity: 2.4
-  max_acceleration: 1.5
-  sampling_interval: 0.05
+  type: optimal # optimal works best, other values are snap (minimum snap trajectory), spline
+  max_time: 12 # only important for spline. In spline we assume same distance passed in same times, this is the time for the trajectory and timestamps are derived accordingly
+  max_velocity: 4 # max velocity in each axis of the drone
+  max_acceleration: 2.2 # max acceleration in each axis of the drone
+  sampling_interval: 0.05 # How granular the trajectory is sampled
 
-additional_statics_obstacles: []
+  max_traj_divergence: 0.001 # How much the trajectory is maximum allowed to diverge from the planned path (only relevant for optimal time parametization)
+  prepend_traj_time: 3 # In optimal planning, we prepend trajectory with part of previous one to guarantee smooth velocities, this value defines the number of seconds to prepend
+
+additional_statics_obstacles: [] # For constraining the solution space additional obstacles can be provided as a list
