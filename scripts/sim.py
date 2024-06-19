@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 
 
 def simulate(
-    config: str = "config/iros_competition.yaml",
+    config: str = "config/level1.yaml",
     controller: str = "src/my_controller_cpp.py",
    #controller: str = "examples/controller.py",
     n_runs: int = 1,

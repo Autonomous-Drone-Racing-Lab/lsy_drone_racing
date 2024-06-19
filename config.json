@@ -208,17 +208,17 @@
     },
     "world_properties": {
         "inflate_radius": {
-            "gate": 0.12,
-            "obstacle": 0.1
+            "gate": 0.15,
+            "obstacle": 0.15
         },
         "lower_bound": [-3, -3, 0],
         "upper_bound": [3, 3, 1.5]
     },
     "path_planner_properties": {
-        "time_limit_online": 0.2,
+        "time_limit_online": 0.3,
         "time_limit_offline": 1.5,
         "optimality_threshold_percentage": 0.05,
-        "checkpoint_gate_offset": 0.13,
+        "checkpoint_gate_offset": 0.2,
         "range": 0.7,
         "pos_divergence_recalculate": 0.01,
         "rot_divergence_recalculate": 0.01,
@@ -230,10 +230,10 @@
         "can_pass_gate": true
     },
     "trajectory_generator_properties": {
-        "type": "snap",
+        "type": "optimal",
         "max_time": 12,
-        "max_velocity": 30,
-        "max_acceleration": 12,
+        "max_velocity": 2,
+        "max_acceleration": 1.2,
         "sampling_interval": 0.05
     },
     "additional_statics_obstacles": [

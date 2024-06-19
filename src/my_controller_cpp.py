@@ -104,7 +104,7 @@ class Controller(BaseController):
         self.NOMINAL_OBSTACLES = initial_info["nominal_obstacles_pos"]
         self.GATE_TYPES = initial_info["gate_dimensions"]
         self.start_point = np.array([initial_obs[0], initial_obs[2], self.takeoff_height])
-        self.goal_point = np.array([-0.5, 2.9, 0.75] ) # Hardcoded from the config file
+        self.goal_point = np.array([0, -2, 0.5]) # Hardcoded from the config file
 
         # Store Information for tracking
         self.gate_update_info = {}
@@ -272,30 +272,30 @@ class Controller(BaseController):
         """
         print(f"Episode learn")
 
-        if self.keep_history:
-            for key, value in self.gate_update_info.items():
-                print(f"Update gate {key} to {value}")
-                self.NOMINAL_GATES[key] = value
-            self.gate_update_info = {}
+        # if self.keep_history:
+        #     for key, value in self.gate_update_info.items():
+        #         print(f"Update gate {key} to {value}")
+        #         self.NOMINAL_GATES[key] = value
+        #     self.gate_update_info = {}
             
-            for key, value in self.obstacle_update_info.items():
-                print(f"Update obstacle {key} to {value}")
-                self.NOMINAL_OBSTACLES[key] = value
-            self.obstacle_update_info = {}
+        #     for key, value in self.obstacle_update_info.items():
+        #         print(f"Update obstacle {key} to {value}")
+        #         self.NOMINAL_OBSTACLES[key] = value
+        #     self.obstacle_update_info = {}
         
-        # Setup the trajectory generator
-        self.traj_generator_cpp = OnlineTrajGenerator(self.start_point, self.goal_point, self.NOMINAL_GATES, self.NOMINAL_OBSTACLES, self.config_path)
-        self.traj_generator_cpp.pre_compute_traj(self.takeoff_time)
+        # # Setup the trajectory generator
+        # self.traj_generator_cpp = OnlineTrajGenerator(self.start_point, self.goal_point, self.NOMINAL_GATES, self.NOMINAL_OBSTACLES, self.config_path)
+        # self.traj_generator_cpp.pre_compute_traj(self.takeoff_time)
 
-        if self.VERBOSE:
-            traj = self.traj_generator_cpp.get_planned_traj()
-            traj_positions = traj[:, [0, 3, 6]]
-            draw_traj_without_ref(self.initial_info, traj_positions)
+        # if self.VERBOSE:
+        #     traj = self.traj_generator_cpp.get_planned_traj()
+        #     traj_positions = traj[:, [0, 3, 6]]
+        #     draw_traj_without_ref(self.initial_info, traj_positions)
 
-        # Append extra info to scenario
-        additional_static_obstacles = self.config["additional_statics_obstacles"]
-        self.NOMINAL_OBSTACLES.extend(additional_static_obstacles)
+        # # Append extra info to scenario
+        # additional_static_obstacles = self.config["additional_statics_obstacles"]
+        # self.NOMINAL_OBSTACLES.extend(additional_static_obstacles)
 
-        self.last_traj_recalc_time = None
-        self.last_gate_change_time = 0
-        self.last_gate_id = 0
+        # self.last_traj_recalc_time = None
+        # self.last_gate_change_time = 0
+        # self.last_gate_id = 0
