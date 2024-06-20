@@ -34,9 +34,8 @@ import numpy as np
 from lsy_drone_racing.command import Command
 from lsy_drone_racing.controller import BaseController
 from lsy_drone_racing.utils import draw_traj_without_ref, remove_trajectory
-from online_traj_planner import OnlineTrajGenerator
-from src.utils.config_reader import ConfigReader
-from src.state_estimator import StateEstimator
+from online_traj_planner import OnlineTrajGenerator # c++ binding
+from src.experiment_trakcer import ExperimentTracker
 from enum import Enum
 
 class QuadrotorState(Enum):
@@ -120,6 +119,10 @@ class Controller(BaseController):
             traj_positions = traj[:, [0, 3, 6]]
             draw_traj_without_ref(initial_info, traj_positions)
 
+        # Experiment tracker
+        self.experiment_tracker = ExperimentTracker()
+        self.experiment_tracker.add_experiment()
+
         # Append extra info to scenario
         additional_static_obstacles = self.config["additional_statics_obstacles"]
         self.NOMINAL_OBSTACLES.extend(additional_static_obstacles)
@@ -175,11 +178,13 @@ class Controller(BaseController):
             # Normalizing such that all obstacles are always grounded
             current_target_gate_pos[2] = 0
             
-            # Helpers for plotting
+            # Identify gate passed
             if current_target_gate_id != self.last_gate_id:
                 self.last_gate_id = current_target_gate_id
                 self.last_gate_change_time = ep_time
+                self.experiment_tracker.add_gate_passed()
             
+            # For history tracking, i.e. storing gate positions at level 2
             if current_target_gate_in_range:
                 self.gate_update_info[current_target_gate_id] = current_target_gate_pos
             
@@ -215,6 +220,8 @@ class Controller(BaseController):
                 self.quadrotor_state = QuadrotorState.LANDING
             else:
                 traj_sample = self.traj_generator_cpp.sample_traj(ep_time)
+                self.experiment_tracker.add_drone_obs(current_drone_pos)
+                self.experiment_tracker.add_traj_step(traj_sample, ep_time)
                 desired_pos = np.array([traj_sample[0], traj_sample[3], traj_sample[6]])
                 desired_vel = np.array([traj_sample[1], traj_sample[4], traj_sample[7]])
                 desired_acc = np.array([traj_sample[2], traj_sample[5], traj_sample[8]])
@@ -271,32 +278,35 @@ class Controller(BaseController):
             re-plan.
 
         """
-        print(f"Episode learn")
+        if self.config["general_properties"]["vis_experiment"]:
+            self.experiment_tracker.plot_last_experiment()
 
-        # if self.keep_history:
-        #     for key, value in self.gate_update_info.items():
-        #         print(f"Update gate {key} to {value}")
-        #         self.NOMINAL_GATES[key] = value
-        #     self.gate_update_info = {}
+
+        if self.config["general_properties"]["multi_episode"]:
+            if self.config["learn_from_history"]["multi_episode"]:
+                # update gate pos from history
+                for key, value in self.gate_update_info.items():
+                    self.NOMINAL_GATES[key] = value
+                self.gate_update_info = {}
+                
+                # update obstacle pos from history
+                for key, value in self.obstacle_update_info.items():
+                    self.NOMINAL_OBSTACLES[key] = value
+                self.obstacle_update_info = {}
             
-        #     for key, value in self.obstacle_update_info.items():
-        #         print(f"Update obstacle {key} to {value}")
-        #         self.NOMINAL_OBSTACLES[key] = value
-        #     self.obstacle_update_info = {}
-        
-        # # Setup the trajectory generator
-        # self.traj_generator_cpp = OnlineTrajGenerator(self.start_point, self.goal_point, self.NOMINAL_GATES, self.NOMINAL_OBSTACLES, self.config_path)
-        # self.traj_generator_cpp.pre_compute_traj(self.takeoff_time)
+            # Calculate new initial trajectory
+            self.traj_generator_cpp = OnlineTrajGenerator(self.start_point, self.goal_point, self.NOMINAL_GATES, self.NOMINAL_OBSTACLES, self.config_path)
+            self.traj_generator_cpp.pre_compute_traj(self.takeoff_time)
 
-        # if self.VERBOSE:
-        #     traj = self.traj_generator_cpp.get_planned_traj()
-        #     traj_positions = traj[:, [0, 3, 6]]
-        #     draw_traj_without_ref(self.initial_info, traj_positions)
+            if self.VERBOSE:
+                traj = self.traj_generator_cpp.get_planned_traj()
+                traj_positions = traj[:, [0, 3, 6]]
+                draw_traj_without_ref(self.initial_info, traj_positions)
 
-        # # Append extra info to scenario
-        # additional_static_obstacles = self.config["additional_statics_obstacles"]
-        # self.NOMINAL_OBSTACLES.extend(additional_static_obstacles)
+            # Append extra info to scenario
+            additional_static_obstacles = self.config["additional_statics_obstacles"]
+            self.NOMINAL_OBSTACLES.extend(additional_static_obstacles)
 
-        # self.last_traj_recalc_time = None
-        # self.last_gate_change_time = 0
-        # self.last_gate_id = 0
+            self.last_traj_recalc_time = None
+            self.last_gate_change_time = 0
+            self.last_gate_id = 0

@@ -87,7 +87,9 @@ component_properties:
 general_properties:
   takeoff_time: 0.7
   takeoff_height: 0.15
-  keep_history: false
+  multi_episode: false
+  learn_from_history: false
+  vis_experiment: true
 
 
 # In the world properties, we define how our reprsentation of the world in code should look like
@@ -107,7 +109,7 @@ path_planner_properties:
   optimality_threshold_percentage: 0.05 # value for ompl, we preemtively stop planning if path diverges from straight line path by less than 5%
   checkpoint_gate_offset: 0.05 # we place additional checkpoints before and after each gate, this gives the distance
   range: 0.7 # max length of straight line distance used in RRT* algorithm
-  min_dist_check_traj_collision: 0.1 # this is a custom inflation radius we use to check a trajectory for collision once we have new gate informatio, one strategy is to make this a bit smaller than the original ones
+  min_dist_check_traj_collision: 0.05 # this is a custom inflation radius we use to check a trajectory for collision once we have new gate informatio, one strategy is to make this a bit smaller than the original ones
   path_simplification: ompl # simplification method ompl works the best other values are none, and custom
   recalculate_online: False # For sim purpose whether we block the main thread during recomputation
   advance_for_calculation: False # For sim purpose, whether we advance trajectory for traj calculation time
