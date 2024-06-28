@@ -5,6 +5,7 @@ import sys
 import os
 from sim import simulate
 import numpy as np
+from optuna.samplers import RandomSampler
 
 import logging
 logger = logging.getLogger("hp_search")
@@ -35,8 +36,8 @@ def objective(trial):
     N_RUNS = 25
 
     planner_algo = trial.suggest_categorical("planner_algo", ["rrt", "fmt"])
-    max_vel = trial.suggest_float("max_velocity", 2, 5)
-    max_acc = trial.suggest_float("max_acceleration", 1, 4)
+    max_vel = trial.suggest_float("max_velocity", 2.5, 5)
+    max_acc = trial.suggest_float("max_acceleration", 1.5, 4)
     controller_config = create_config(CONFIG_PATH, TEMP_DIR, planner_algo, max_vel, max_acc)
 
     logger.info(f"Starting new experiment with params algo: {planner_algo}, max_vel: {max_vel}, max_acc: {max_acc}")
@@ -45,7 +46,7 @@ def objective(trial):
     failed_runs = len([x for x in ep_times if x is None])
     if failed_runs > N_RUNS / 2:
         logger.info(f"Experiment failed with {failed_runs} runs out of {N_RUNS}")
-        return 1000
+        return None
     
     ep_times = np.array([x for x in ep_times if x is not None])
     # find median time
@@ -64,9 +65,9 @@ if __name__ == "__main__":
     console_handler = logging.StreamHandler(stream=sys.stdout)
     logger.addHandler(file_handler)
     logger.setLevel(logging.INFO)
-
-    study = optuna.create_study(direction="minimize")
-    study.optimize(objective, n_trials=100)
+    sampler = optuna.samplers.RandomSampler()
+    study = optuna.create_study(direction="minimize", sampler=sampler)
+    study.optimize(objective, n_trials=100, )
     logger.info(f"BEst value is {study.best_value}")
     logger.info(f"Best params are {study.best_params}")
 

@@ -164,8 +164,8 @@ path_planner_properties:
   advance_for_calculation: false
   can_pass_gate: true
   checkpoint_gate_offset: 0.05
-  max_acceleration: 2.103345420959656
-  max_velocity: 4.096236447390447
+  max_acceleration: 3.3522017070012797
+  max_velocity: 4.244859407597202
   min_dist_check_traj_collision: 0.05
   optimality_threshold_percentage: 0.05
   path_simplification: ompl
