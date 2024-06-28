@@ -55,6 +55,7 @@ class Controller(BaseController):
         initial_info: dict,
         buffer_size: int = 100,
         verbose: bool = False,
+        config = "./config.yaml"
     ):
         """Initialization of the controller.
 
@@ -72,21 +73,14 @@ class Controller(BaseController):
             verbose: Turn on and off additional printouts and plots.
         """
         super().__init__(initial_obs, initial_info, buffer_size, verbose)
-
-        # Print the initial information.
-        if True or verbose:
-            print("Initial information:")
-            for key, value in initial_info.items():
-                print(f"  {key}: {value}")
             
         # load config
-        self.config_path = "./config.yaml"
+        self.config_path = config
         with open(self.config_path, "r") as f:
             self.config = yaml.safe_load(f)
         
         self.takeoff_height = self.config["general_properties"]["takeoff_height"]
         self.takeoff_time = self.config["general_properties"]["takeoff_time"]
-        self.keep_history = self.config["general_properties"]["keep_history"]
         self.traj_calc_duration = 0.2
 
         # Save environment and control parameters.

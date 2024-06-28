@@ -37,9 +37,10 @@ def simulate(
     config: str = "config/level3.yaml",
     controller: str = "src/my_controller_cpp.py",
    #controller: str = "examples/controller.py",
-    n_runs: int = 1,
+    n_runs: int = 10,
     gui: bool = True,
     terminate_on_lap: bool = True,
+    controller_config: str = None
 ) -> list[float]:
     """Evaluate the drone controller over multiple episodes.
 
@@ -91,71 +92,78 @@ def simulate(
     ep_times = []
 
     # Run the episodes.
-    for _ in range(n_runs):
-        ep_start = time.time()
-        done = False
-        action = np.zeros(4)
-        reward = 0
-        obs, info = wrapped_env.reset()
-        info["ctrl_timestep"] = CTRL_DT
-        info["ctrl_freq"] = CTRL_FREQ
-        lap_finished = False
-        # obs = [x, x_dot, y, y_dot, z, z_dot, phi, theta, psi, p, q, r]
-        vicon_obs = [obs[0], 0, obs[2], 0, obs[4], 0, obs[6], obs[7], obs[8], 0, 0, 0]
-        ctrl = ctrl_class(vicon_obs, info, verbose=config.verbose)
-        gui_timer = p.addUserDebugText("", textPosition=[0, 0, 1], physicsClientId=env.PYB_CLIENT)
-        i = 0
-        while not done:
-            curr_time = i * CTRL_DT
-            gui_timer = p.addUserDebugText(
-                "Ep. time: {:.2f}s".format(curr_time),
-                textPosition=[0, 0, 1.5],
-                textColorRGB=[1, 0, 0],
-                lifeTime=3 * CTRL_DT,
-                textSize=1.5,
-                parentObjectUniqueId=0,
-                parentLinkIndex=-1,
-                replaceItemUniqueId=gui_timer,
-                physicsClientId=env.PYB_CLIENT,
-            )
-
-            # Get the observation from the motion capture system
+    for i in range(n_runs):
+        try:
+            ep_start = time.time()
+            done = False
+            action = np.zeros(4)
+            reward = 0
+            obs, info = wrapped_env.reset()
+            info["ctrl_timestep"] = CTRL_DT
+            info["ctrl_freq"] = CTRL_FREQ
+            lap_finished = False
+            # obs = [x, x_dot, y, y_dot, z, z_dot, phi, theta, psi, p, q, r]
             vicon_obs = [obs[0], 0, obs[2], 0, obs[4], 0, obs[6], obs[7], obs[8], 0, 0, 0]
-            # Compute control input.
-            command_type, args = ctrl.compute_control(curr_time, vicon_obs, reward, done, info)
-            # Apply the control input to the drone. This is a deviation from the gym API as the
-            # action is not applied in env.step()
-            apply_sim_command(wrapped_env, command_type, args)
-            obs, reward, done, info, action = wrapped_env.step(curr_time, action)
-            # Update the controller internal state and models.
-            ctrl.step_learn(action, obs, reward, done, info)
-            # Add up reward, collisions, violations.
-            stats["ep_reward"] += reward
-            if info["collision"][1]:
-                stats["collisions"] += 1
-                stats["collision_objects"].add(info["collision"][0])
-            stats["violations"] += "constraint_violation" in info and info["constraint_violation"]
+            if controller_config is None:
+                ctrl = ctrl_class(vicon_obs, info, verbose=config.verbose)
+            else:
+                ctrl = ctrl_class(vicon_obs, info, verbose=config.verbose, config=controller_config)
 
-            # Synchronize the GUI.
-            if config.quadrotor_config.gui:
-                sync(i, ep_start, CTRL_DT)
-            i += 1
-            # Break early after passing the last gate (=> gate -1) or task completion
-            if terminate_on_lap and info["current_target_gate_id"] == -1:
-                info["task_completed"], lap_finished = True, True
-            if info["task_completed"]:
-                done = True
+            gui_timer = p.addUserDebugText("", textPosition=[0, 0, 1], physicsClientId=env.PYB_CLIENT)
+            i = 0
+            while not done:
+                curr_time = i * CTRL_DT
+                gui_timer = p.addUserDebugText(
+                    "Ep. time: {:.2f}s".format(curr_time),
+                    textPosition=[0, 0, 1.5],
+                    textColorRGB=[1, 0, 0],
+                    lifeTime=3 * CTRL_DT,
+                    textSize=1.5,
+                    parentObjectUniqueId=0,
+                    parentLinkIndex=-1,
+                    replaceItemUniqueId=gui_timer,
+                    physicsClientId=env.PYB_CLIENT,
+                )
 
-        # Learn after the episode if the controller supports it
-        ctrl.episode_learn()  # Update the controller internal state and models.
-        log_episode_stats(stats, info, config, curr_time, lap_finished)
-        ctrl.episode_reset()
-        # Reset the statistics
-        stats["ep_reward"] = 0
-        stats["collisions"] = 0
-        stats["collision_objects"] = set()
-        stats["violations"] = 0
-        ep_times.append(curr_time if info["current_target_gate_id"] == -1 else None)
+                # Get the observation from the motion capture system
+                vicon_obs = [obs[0], 0, obs[2], 0, obs[4], 0, obs[6], obs[7], obs[8], 0, 0, 0]
+                # Compute control input.
+                command_type, args = ctrl.compute_control(curr_time, vicon_obs, reward, done, info)
+                # Apply the control input to the drone. This is a deviation from the gym API as the
+                # action is not applied in env.step()
+                apply_sim_command(wrapped_env, command_type, args)
+                obs, reward, done, info, action = wrapped_env.step(curr_time, action)
+                # Update the controller internal state and models.
+                ctrl.step_learn(action, obs, reward, done, info)
+                # Add up reward, collisions, violations.
+                stats["ep_reward"] += reward
+                if info["collision"][1]:
+                    stats["collisions"] += 1
+                    stats["collision_objects"].add(info["collision"][0])
+                stats["violations"] += "constraint_violation" in info and info["constraint_violation"]
+
+                # Synchronize the GUI.
+                if config.quadrotor_config.gui:
+                    sync(i, ep_start, CTRL_DT)
+                i += 1
+                # Break early after passing the last gate (=> gate -1) or task completion
+                if terminate_on_lap and info["current_target_gate_id"] == -1:
+                    info["task_completed"], lap_finished = True, True
+                if info["task_completed"]:
+                    done = True
+
+            # Learn after the episode if the controller supports it
+            ctrl.episode_learn()  # Update the controller internal state and models.
+            log_episode_stats(stats, info, config, curr_time, lap_finished)
+            ctrl.episode_reset()
+            # Reset the statistics
+            stats["ep_reward"] = 0
+            stats["collisions"] = 0
+            stats["collision_objects"] = set()
+            stats["violations"] = 0
+            ep_times.append(curr_time if info["current_target_gate_id"] == -1 else None)
+        except:
+            print("Error during episode {i}. Skipping episode.")
 
     # Close the environment
     env.close()

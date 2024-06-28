@@ -86,7 +86,7 @@ general_properties:
   takeoff_height: 0.15
   multi_episode: false
   learn_from_history: false
-  vis_experiment: true
+  vis_experiment: false
 
 
 # In the world properties, we define how our reprsentation of the world in code should look like

@@ -1,0 +1,197 @@
+additional_statics_obstacles: []
+component_geometry:
+  large_portal:
+    bottom_bar:
+      name: bottom_bar
+      position:
+      - 0
+      - 0
+      - 0.75
+      size:
+      - 0.55
+      - 0.05
+      - 0.05
+      type: collision
+    filling:
+      name: filling
+      position:
+      - 0
+      - 0
+      - 1.0
+      size:
+      - 0.45
+      - 1.0e-08
+      - 0.45
+      type: filling
+    left_bar:
+      name: left_bar
+      position:
+      - -0.25
+      - 0
+      - 1
+      size:
+      - 0.05
+      - 0.05
+      - 0.55
+      type: collision
+    right_bar:
+      name: right_bar
+      position:
+      - 0.25
+      - 0
+      - 1
+      size:
+      - 0.05
+      - 0.05
+      - 0.55
+      type: collision
+    support:
+      name: support
+      position:
+      - 0
+      - 0
+      - 0.3875
+      size:
+      - 0.05
+      - 0.05
+      - 0.755
+      type: collision
+    top_bar:
+      name: top_bar
+      position:
+      - 0
+      - 0
+      - 1.25
+      size:
+      - 0.55
+      - 0.05
+      - 0.05
+      type: collision
+  obstacle:
+    cylinder:
+      name: obstacle
+      position:
+      - 0
+      - 0
+      - 0.525
+      size:
+      - 0.1
+      - 0.1
+      - 1.05
+      type: collision
+  small_portal:
+    bottom_bar:
+      name: bottom_bar
+      position:
+      - 0
+      - 0
+      - 0.275
+      size:
+      - 0.55
+      - 0.05
+      - 0.05
+      type: collision
+    filling:
+      name: filling
+      position:
+      - 0
+      - 0
+      - 0.525
+      size:
+      - 0.45
+      - 1.0e-08
+      - 0.45
+      type: filling
+    left_bar:
+      name: left_bar
+      position:
+      - -0.25
+      - 0
+      - 0.525
+      size:
+      - 0.05
+      - 0.05
+      - 0.55
+      type: collision
+    right_bar:
+      name: right_bar
+      position:
+      - 0.25
+      - 0
+      - 0.525
+      size:
+      - 0.05
+      - 0.05
+      - 0.55
+      type: collision
+    support:
+      name: support
+      position:
+      - 0
+      - 0
+      - 0.15
+      size:
+      - 0.05
+      - 0.05
+      - 0.3
+      type: collision
+    top_bar:
+      name: top_bar
+      position:
+      - 0
+      - 0
+      - 0.775
+      size:
+      - 0.55
+      - 0.05
+      - 0.05
+      type: collision
+component_properties:
+  large_portal:
+    height: 1
+  small_portal:
+    height: 0.525
+gate_id_to_name_mapping:
+  0: large_portal
+  1: small_portal
+general_properties:
+  learn_from_history: false
+  multi_episode: false
+  takeoff_height: 0.15
+  takeoff_time: 0.7
+  vis_experiment: false
+path_planner_properties:
+  advance_for_calculation: false
+  can_pass_gate: true
+  checkpoint_gate_offset: 0.05
+  max_acceleration: 2.103345420959656
+  max_velocity: 4.096236447390447
+  min_dist_check_traj_collision: 0.05
+  optimality_threshold_percentage: 0.05
+  path_simplification: ompl
+  planner: fmt
+  planner_algo: fmt
+  range: 0.7
+  recalculate_online: false
+  time_limit_offline: 1.5
+  time_limit_online: 0.5
+trajectory_generator_properties:
+  max_acceleration: 1.5
+  max_time: 12
+  max_traj_divergence: 0.001
+  max_velocity: 2.5
+  prepend_traj_time: 3
+  sampling_interval: 0.05
+  type: optimal
+world_properties:
+  inflate_radius:
+    gate: 0.15
+    obstacle: 0.15
+  lower_bound:
+  - -3
+  - -3
+  - 0
+  upper_bound:
+  - 3
+  - 3
+  - 1.5
