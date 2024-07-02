@@ -163,24 +163,20 @@ general_properties:
 path_planner_properties:
   advance_for_calculation: false
   can_pass_gate: true
-  checkpoint_gate_offset: 0.05
-  checkpoint_offset: 0.12525234540799307
-  max_acceleration: 4.86576733801193
-  max_velocity: 4.9414011735370265
-  min_dist_check_traj_collision: 0.05
+  checkpoint_gate_offset: 0.1
+  min_dist_check_traj_collision: 0.1
   optimality_threshold_percentage: 0.05
   path_simplification: ompl
   planner: fmt
-  planner_algo: fmt
   range: 0.7
   recalculate_online: false
   time_limit_offline: 1.5
   time_limit_online: 0.5
 trajectory_generator_properties:
-  max_acceleration: 1.5
+  max_acceleration: 2.879479108146063
   max_time: 12
   max_traj_divergence: 0.001
-  max_velocity: 2.5
+  max_velocity: 5.459976924912872
   prepend_traj_time: 3
   sampling_interval: 0.05
   type: optimal

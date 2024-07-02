@@ -157,33 +157,30 @@ gate_id_to_name_mapping:
 general_properties:
   learn_from_history: false
   multi_episode: false
+  no_recompute: true
   takeoff_height: 0.15
   takeoff_time: 0.7
   vis_experiment: false
 path_planner_properties:
   advance_for_calculation: false
-  can_pass_gate: true
-  checkpoint_gate_offset: 0.05
-  checkpoint_offset: 0.12525234540799307
-  max_acceleration: 4.86576733801193
-  max_velocity: 4.9414011735370265
+  can_pass_gate: false
+  checkpoint_gate_offset: 0.2
   min_dist_check_traj_collision: 0.05
   optimality_threshold_percentage: 0.05
   path_simplification: ompl
-  planner: fmt
-  planner_algo: fmt
+  planner: rrt
   range: 0.7
   recalculate_online: false
   time_limit_offline: 1.5
   time_limit_online: 0.5
 trajectory_generator_properties:
   max_acceleration: 1.5
-  max_time: 12
+  max_time: 10.4
   max_traj_divergence: 0.001
   max_velocity: 2.5
   prepend_traj_time: 3
   sampling_interval: 0.05
-  type: optimal
+  type: spline
 world_properties:
   inflate_radius:
     gate: 0.15

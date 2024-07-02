@@ -157,13 +157,28 @@ class Map:
             print("path not available")
         else:
             ax.plot(*np.array(path).T, '-', color = (0.9, 0.2, 0.5, 0.8), zorder = 5)
+            # add point at start
+            ax.scatter(*path[0], color = 'red', zorder = 5)
             # mar path coordinates wit red dots
-            ax.scatter(*np.array(path).T, color = 'red', zorder = 5)
+            #ax.scatter(*np.array(path).T, color = 'red', zorder = 5)
     
-    def draw_scene(self, path, checkpoints=None):
+    def draw_traj(self, ax, traj):
+        '''draw the trajectory if available'''
+        if traj is None:
+            print("traj not available")
+        else:
+            ax.plot(*np.array(traj).T, '-', color = 'blue', zorder = 5)
+            # mar path coordinates wit red dots
+            #ax.scatter(*np.array(traj).T, color = 'red', zorder = 5)
+    
+    def draw_scene(self, path, traj=None, checkpoints=None):
         ax = self.create_map_sized_figure()
         self.add_objects_to_plot(ax)
+        
         self.draw_path(ax, path)
+        if traj is not None:
+            self.draw_traj(ax, traj)
+
         if checkpoints is not None:
             for checkpoint in checkpoints:
                 ax.scatter(*checkpoint, color='green', zorder=5)

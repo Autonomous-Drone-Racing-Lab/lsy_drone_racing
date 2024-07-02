@@ -32,7 +32,7 @@ class ConfigReader:
 
     def get_gate_geometry_by_type(self, type_id: int):
         # convert int to string
-        type_id = str(type_id)
+       # type_id = str(type_id)
         type_name = self.config['gate_id_to_name_mapping'][type_id]
         return self.config['component_geometry'][type_name]
 

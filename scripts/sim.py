@@ -35,9 +35,9 @@ logger = logging.getLogger(__name__)
 
 def simulate(
     config: str = "config/level3.yaml",
-    controller: str = "src/my_controller_cpp.py",
-   #controller: str = "examples/controller.py",
-    n_runs: int = 10,
+   controller: str = "src/my_controller_cpp.py",
+   # controller: str = "examples/controller.py",
+    n_runs: int = 1,
     gui: bool = True,
     terminate_on_lap: bool = True,
     controller_config: str = None
@@ -104,6 +104,7 @@ def simulate(
             lap_finished = False
             # obs = [x, x_dot, y, y_dot, z, z_dot, phi, theta, psi, p, q, r]
             vicon_obs = [obs[0], 0, obs[2], 0, obs[4], 0, obs[6], obs[7], obs[8], 0, 0, 0]
+            
             if controller_config is None:
                 ctrl = ctrl_class(vicon_obs, info, verbose=config.verbose)
             else:
@@ -162,8 +163,13 @@ def simulate(
             stats["collision_objects"] = set()
             stats["violations"] = 0
             ep_times.append(curr_time if info["current_target_gate_id"] == -1 else None)
-        except:
-            print("Error during episode {i}. Skipping episode.")
+        
+        # cath keyboad interup
+        except KeyboardInterrupt:
+            print("Keyboard interrupt. Exiting.")
+            exit(0)
+        except Exception as e:
+            print(f"Error during episode {i}. The error was: {e}. Skipping to next episode.")
 
     # Close the environment
     env.close()
@@ -171,6 +177,25 @@ def simulate(
 
 
 def log_episode_stats(stats: dict, info: dict, config: Munch, curr_time: float, lap_finished: bool):
+    gates = [6, 7, 8, 9]
+    obstacles = [3,2,5,4]
+
+    def get_name(collision_info):
+        id, did_collide = collision_info
+        if not did_collide:
+            return "collision_free"
+        if id is None:
+            return "world"
+        
+        if id in gates:
+            idx = gates.index(id)
+            return f"gate_{idx}"
+        if id in obstacles:
+            idx = obstacles.index(id)
+            return f"obstacle_{idx}"
+        
+        return f"unknown_{id}"
+
     """Log the statistics of a single episode."""
     stats["gates_passed"] = info["current_target_gate_id"]
     if stats["gates_passed"] == -1:  # The drone has passed the final gate
@@ -187,7 +212,7 @@ def log_episode_stats(stats: dict, info: dict, config: Munch, curr_time: float, 
         (
             f"Flight time (s): {curr_time}\n"
             f"Reason for termination: {termination}\n"
-            f"Collision info: {info['collision']}\n"
+            f"Collision info: {get_name(info['collision'])}\n"
             f"Gates passed: {stats['gates_passed']}\n"
             f"Total reward: {stats['ep_reward']}\n"
             f"Number of collisions: {stats['collisions']}\n"

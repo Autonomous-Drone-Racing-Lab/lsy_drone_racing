@@ -1,0 +1,202 @@
+Starting new experiment with params algo: fmt, max_vel: 4.750214150260941, max_acc: 1.8164318627216522
+Experiment completed with median_time: 11.8 and mean time: 11.844444444444443. The success rate was: 0.72
+Starting new experiment with params algo: fmt, max_vel: 2.979723404066875, max_acc: 3.2010803290000647
+Experiment completed with median_time: 11.683333333333334 and mean time: 11.960416666666667. The success rate was: 0.64
+Starting new experiment with params algo: rrt, max_vel: 3.7075691336306096, max_acc: 2.2189848902912863
+Experiment completed with median_time: 11.533333333333333 and mean time: 11.848888888888888. The success rate was: 0.6
+Starting new experiment with params algo: fmt, max_vel: 4.52064551735403, max_acc: 3.394298870217293
+Experiment completed with median_time: 11.583333333333332 and mean time: 11.75925925925926. The success rate was: 0.72
+Starting new experiment with params algo: fmt, max_vel: 3.861228563069659, max_acc: 1.7801421812708083
+Experiment completed with median_time: 12.366666666666667 and mean time: 12.505882352941176. The success rate was: 0.68
+Starting new experiment with params algo: rrt, max_vel: 4.85206945479317, max_acc: 1.9467422112616468
+Experiment completed with median_time: 12.55 and mean time: 12.580555555555556. The success rate was: 0.48
+Starting new experiment with params algo: rrt, max_vel: 3.896186837023359, max_acc: 1.5457198229805258
+Experiment completed with median_time: 11.783333333333333 and mean time: 11.683333333333334. The success rate was: 0.56
+Starting new experiment with params algo: fmt, max_vel: 3.190310125894686, max_acc: 1.554982019536177
+Experiment completed with median_time: 11.9 and mean time: 12.123529411764705. The success rate was: 0.68
+Starting new experiment with params algo: rrt, max_vel: 3.140588954300596, max_acc: 2.838853156408568
+Experiment completed with median_time: 11.533333333333333 and mean time: 11.816666666666665. The success rate was: 0.56
+Starting new experiment with params algo: fmt, max_vel: 3.690848564344633, max_acc: 2.370925798355365
+Experiment completed with median_time: 11.7 and mean time: 12.011111111111111. The success rate was: 0.72
+Starting new experiment with params algo: rrt, max_vel: 3.764254744599346, max_acc: 3.831445446513304
+Experiment completed with median_time: 11.4 and mean time: 11.896491228070177. The success rate was: 0.76
+Starting new experiment with params algo: fmt, max_vel: 4.80067500540268, max_acc: 3.1760702529067957
+Experiment completed with median_time: 12.066666666666666 and mean time: 12.277777777777779. The success rate was: 0.72
+Starting new experiment with params algo: rrt, max_vel: 2.7055700457613896, max_acc: 1.9575498268289357
+Experiment completed with median_time: 12.133333333333333 and mean time: 12.284210526315789. The success rate was: 0.76
+Starting new experiment with params algo: rrt, max_vel: 4.227170630573393, max_acc: 3.549081883492862
+Experiment completed with median_time: 11.6 and mean time: 11.933333333333334. The success rate was: 0.72
+Starting new experiment with params algo: rrt, max_vel: 4.7529432457779475, max_acc: 2.7325362679831593
+Experiment completed with median_time: 11.733333333333333 and mean time: 11.930952380952379. The success rate was: 0.56
+Starting new experiment with params algo: fmt, max_vel: 3.932922986394636, max_acc: 1.601104799882915
+Experiment completed with median_time: 12.166666666666666 and mean time: 12.298245614035086. The success rate was: 0.76
+Starting new experiment with params algo: fmt, max_vel: 4.893970249248606, max_acc: 1.7112369666451996
+Experiment completed with median_time: 11.416666666666668 and mean time: 11.5125. The success rate was: 0.64
+Starting new experiment with params algo: rrt, max_vel: 3.565227556931916, max_acc: 2.914161731316122
+Experiment completed with median_time: 11.833333333333334 and mean time: 11.807142857142859. The success rate was: 0.56
+Starting new experiment with params algo: fmt, max_vel: 3.0116559876849665, max_acc: 2.927883515479281
+Experiment completed with median_time: 11.566666666666666 and mean time: 11.749122807017544. The success rate was: 0.76
+Starting new experiment with params algo: rrt, max_vel: 2.547313212902897, max_acc: 1.7058211204089668
+Experiment completed with median_time: 11.516666666666666 and mean time: 11.783333333333331. The success rate was: 0.72
+Starting new experiment with params algo: fmt, max_vel: 3.369973093047575, max_acc: 3.7279131085459265
+Experiment completed with median_time: 11.9 and mean time: 11.952941176470588. The success rate was: 0.68
+Starting new experiment with params algo: rrt, max_vel: 3.5998754330801463, max_acc: 2.4755486414766468
+Experiment completed with median_time: 12.05 and mean time: 12.341666666666667. The success rate was: 0.64
+Starting new experiment with params algo: rrt, max_vel: 3.4461679143342883, max_acc: 3.713116149381961
+Experiment completed with median_time: 12.366666666666667 and mean time: 12.427777777777777. The success rate was: 0.72
+Starting new experiment with params algo: fmt, max_vel: 3.608996288018785, max_acc: 2.4813973678051133
+Experiment completed with median_time: 11.766666666666666 and mean time: 11.789743589743589. The success rate was: 0.52
+Starting new experiment with params algo: rrt, max_vel: 4.796995201905152, max_acc: 3.5951443996987633
+Experiment completed with median_time: 12.0 and mean time: 12.01794871794872. The success rate was: 0.52
+Starting new experiment with params algo: rrt, max_vel: 4.610816357221346, max_acc: 3.3532809145019207
+Experiment completed with median_time: 11.933333333333334 and mean time: 12.056862745098039. The success rate was: 0.68
+Starting new experiment with params algo: rrt, max_vel: 4.240053481893285, max_acc: 3.9274788381140113
+Experiment completed with median_time: 12.3 and mean time: 12.399999999999999. The success rate was: 0.8
+Starting new experiment with params algo: fmt, max_vel: 2.9105849169472737, max_acc: 3.487921343357483
+Experiment completed with median_time: 11.8 and mean time: 11.838888888888889. The success rate was: 0.48
+Starting new experiment with params algo: rrt, max_vel: 2.775393063721634, max_acc: 1.8354108820101578
+Experiment completed with median_time: 11.5 and mean time: 11.75. The success rate was: 0.64
+Starting new experiment with params algo: fmt, max_vel: 4.605254707192493, max_acc: 3.0509058258742585
+Experiment completed with median_time: 12.2 and mean time: 12.118181818181817. The success rate was: 0.44
+Starting new experiment with params algo: rrt, max_vel: 4.85331841990052, max_acc: 3.939813734999113
+Experiment completed with median_time: 11.5 and mean time: 11.698148148148148. The success rate was: 0.72
+Starting new experiment with params algo: rrt, max_vel: 3.2584777457769745, max_acc: 1.61418580120186
+Experiment completed with median_time: 11.9 and mean time: 12.019607843137253. The success rate was: 0.68
+Starting new experiment with params algo: fmt, max_vel: 3.7726750497086927, max_acc: 2.0219315010210726
+Experiment completed with median_time: 11.683333333333334 and mean time: 11.922222222222222. The success rate was: 0.72
+Starting new experiment with params algo: fmt, max_vel: 3.1837730465606047, max_acc: 1.8304547956729584
+Experiment completed with median_time: 12.183333333333334 and mean time: 12.4125. The success rate was: 0.64
+Starting new experiment with params algo: rrt, max_vel: 3.799396405918211, max_acc: 1.6489647339198505
+Experiment completed with median_time: 11.899999999999999 and mean time: 11.8. The success rate was: 0.4
+Starting new experiment with params algo: rrt, max_vel: 4.882772144547637, max_acc: 1.5470367805396954
+Experiment completed with median_time: 12.4 and mean time: 12.335714285714287. The success rate was: 0.56
+Starting new experiment with params algo: fmt, max_vel: 4.437851846148506, max_acc: 3.6718085349335583
+Experiment completed with median_time: 11.75 and mean time: 11.635185185185186. The success rate was: 0.72
+Starting new experiment with params algo: rrt, max_vel: 3.6933617923313826, max_acc: 1.6311816419352905
+Experiment completed with median_time: 11.466666666666667 and mean time: 11.8. The success rate was: 0.6
+Starting new experiment with params algo: rrt, max_vel: 4.348236251315302, max_acc: 1.9251299909931845
+Experiment completed with median_time: 11.433333333333334 and mean time: 11.689473684210528. The success rate was: 0.76
+Starting new experiment with params algo: fmt, max_vel: 2.576909656272315, max_acc: 2.7537677169636186
+Experiment completed with median_time: 11.983333333333334 and mean time: 11.807142857142859. The success rate was: 0.56
+Starting new experiment with params algo: fmt, max_vel: 3.9442192624993724, max_acc: 3.010573891178161
+Experiment completed with median_time: 11.916666666666668 and mean time: 11.799999999999999. The success rate was: 0.48
+Starting new experiment with params algo: rrt, max_vel: 3.6786356934500968, max_acc: 3.6401671063521532
+Experiment completed with median_time: 11.633333333333333 and mean time: 11.937777777777777. The success rate was: 0.6
+Starting new experiment with params algo: fmt, max_vel: 3.1102331611183636, max_acc: 3.1945830009131577
+Experiment completed with median_time: 11.666666666666668 and mean time: 11.852083333333333. The success rate was: 0.64
+Starting new experiment with params algo: rrt, max_vel: 3.665114279219331, max_acc: 3.513256995483573
+Experiment completed with median_time: 11.5 and mean time: 11.591666666666665. The success rate was: 0.8
+Starting new experiment with params algo: fmt, max_vel: 4.938364795373596, max_acc: 3.660267567920559
+Experiment completed with median_time: 12.0 and mean time: 11.750980392156862. The success rate was: 0.68
+Starting new experiment with params algo: fmt, max_vel: 2.938494918526314, max_acc: 2.8841977583522005
+Experiment completed with median_time: 11.833333333333334 and mean time: 11.798039215686275. The success rate was: 0.68
+Starting new experiment with params algo: rrt, max_vel: 4.7365756173715114, max_acc: 2.598772185904169
+Experiment completed with median_time: 11.216666666666667 and mean time: 11.823809523809524. The success rate was: 0.56
+Starting new experiment with params algo: fmt, max_vel: 3.1201198510461623, max_acc: 3.6657095628994907
+Experiment completed with median_time: 12.066666666666666 and mean time: 12.19298245614035. The success rate was: 0.76
+Starting new experiment with params algo: fmt, max_vel: 3.5476221086971873, max_acc: 2.836994376226803
+Experiment completed with median_time: 11.633333333333333 and mean time: 11.746666666666668. The success rate was: 0.6
+Starting new experiment with params algo: rrt, max_vel: 3.060433253422139, max_acc: 3.304219709667401
+Experiment completed with median_time: 11.933333333333334 and mean time: 12.08125. The success rate was: 0.64
+Starting new experiment with params algo: rrt, max_vel: 3.4957221703663777, max_acc: 2.6370580875486818
+Experiment completed with median_time: 12.1 and mean time: 12.108771929824561. The success rate was: 0.76
+Starting new experiment with params algo: rrt, max_vel: 4.0924492061951305, max_acc: 3.565700386286066
+Experiment completed with median_time: 11.95 and mean time: 12.00625. The success rate was: 0.64
+Starting new experiment with params algo: fmt, max_vel: 4.984528596100666, max_acc: 2.2892656629639845
+Experiment completed with median_time: 11.883333333333333 and mean time: 11.825. The success rate was: 0.8
+Starting new experiment with params algo: rrt, max_vel: 3.2088473803618722, max_acc: 2.902203026377647
+Experiment completed with median_time: 11.766666666666666 and mean time: 11.954166666666666. The success rate was: 0.64
+Starting new experiment with params algo: fmt, max_vel: 4.207026736706454, max_acc: 1.7233884711927006
+Experiment completed with median_time: 12.166666666666666 and mean time: 12.026315789473683. The success rate was: 0.76
+Starting new experiment with params algo: fmt, max_vel: 3.8290407237415414, max_acc: 2.9032216361424656
+Experiment completed with median_time: 11.5 and mean time: 11.681818181818182. The success rate was: 0.44
+Starting new experiment with params algo: fmt, max_vel: 3.6696181475654903, max_acc: 3.709850307934683
+Experiment completed with median_time: 11.716666666666665 and mean time: 11.733333333333333. The success rate was: 0.8
+Starting new experiment with params algo: rrt, max_vel: 3.990910213678198, max_acc: 2.4544778649196806
+Experiment completed with median_time: 11.6 and mean time: 11.54102564102564. The success rate was: 0.52
+Starting new experiment with params algo: rrt, max_vel: 3.778946513053765, max_acc: 1.6043216271887184
+Experiment completed with median_time: 11.649999999999999 and mean time: 12.094444444444447. The success rate was: 0.48
+Starting new experiment with params algo: fmt, max_vel: 4.253525181442907, max_acc: 2.9870307979512196
+Experiment completed with median_time: 11.633333333333333 and mean time: 11.542105263157893. The success rate was: 0.76
+Starting new experiment with params algo: fmt, max_vel: 4.467936893861121, max_acc: 3.8199817357956944
+Experiment completed with median_time: 11.766666666666666 and mean time: 12.139999999999997. The success rate was: 0.6
+Starting new experiment with params algo: rrt, max_vel: 3.357386407346728, max_acc: 2.331447802429274
+Experiment completed with median_time: 11.8 and mean time: 11.839215686274509. The success rate was: 0.68
+Starting new experiment with params algo: rrt, max_vel: 4.307173400175447, max_acc: 2.790107940283527
+Experiment completed with median_time: 11.566666666666666 and mean time: 11.717777777777776. The success rate was: 0.6
+Starting new experiment with params algo: rrt, max_vel: 3.540746401011389, max_acc: 1.958110661579766
+Experiment completed with median_time: 11.766666666666666 and mean time: 12.070833333333333. The success rate was: 0.64
+Starting new experiment with params algo: fmt, max_vel: 4.7771525809050965, max_acc: 3.5259411621814816
+Experiment completed with median_time: 11.45 and mean time: 11.679629629629629. The success rate was: 0.72
+Starting new experiment with params algo: fmt, max_vel: 2.989417940325567, max_acc: 3.3580456787811923
+Experiment completed with median_time: 11.433333333333334 and mean time: 11.61111111111111. The success rate was: 0.6
+Starting new experiment with params algo: fmt, max_vel: 4.095777135654647, max_acc: 3.296761638682479
+Experiment completed with median_time: 12.2 and mean time: 12.423333333333332. The success rate was: 0.8
+Starting new experiment with params algo: fmt, max_vel: 3.363343605726341, max_acc: 1.532398549432019
+Experiment completed with median_time: 11.533333333333333 and mean time: 11.574074074074073. The success rate was: 0.72
+Starting new experiment with params algo: fmt, max_vel: 4.234407705469783, max_acc: 2.939093908629422
+Experiment completed with median_time: 11.833333333333334 and mean time: 11.933333333333334. The success rate was: 0.6
+Starting new experiment with params algo: fmt, max_vel: 4.791445742188368, max_acc: 3.446510886844229
+Experiment completed with median_time: 11.633333333333333 and mean time: 11.706666666666669. The success rate was: 0.6
+Starting new experiment with params algo: fmt, max_vel: 4.514795140521716, max_acc: 3.0216223064361207
+Experiment completed with median_time: 12.183333333333334 and mean time: 12.41111111111111. The success rate was: 0.72
+Starting new experiment with params algo: fmt, max_vel: 2.7188235371597407, max_acc: 3.2857322637966417
+Experiment completed with median_time: 11.383333333333333 and mean time: 11.427083333333332. The success rate was: 0.64
+Starting new experiment with params algo: fmt, max_vel: 4.276674123575793, max_acc: 3.453296345819611
+Experiment completed with median_time: 11.666666666666666 and mean time: 11.862745098039214. The success rate was: 0.68
+Starting new experiment with params algo: fmt, max_vel: 4.731005499534753, max_acc: 2.9094218303320316
+Experiment completed with median_time: 11.966666666666667 and mean time: 12.003703703703703. The success rate was: 0.72
+Starting new experiment with params algo: fmt, max_vel: 2.599970754871646, max_acc: 3.031707362136001
+Experiment completed with median_time: 11.8 and mean time: 11.912121212121212. The success rate was: 0.44
+Starting new experiment with params algo: rrt, max_vel: 2.6739198841836997, max_acc: 3.3565866400029467
+Experiment completed with median_time: 11.45 and mean time: 11.687037037037037. The success rate was: 0.72
+Starting new experiment with params algo: fmt, max_vel: 4.951770319906119, max_acc: 3.2214601879372884
+Experiment completed with median_time: 11.6 and mean time: 11.799999999999999. The success rate was: 0.6
+Starting new experiment with params algo: fmt, max_vel: 4.085077141472518, max_acc: 2.245206059102995
+Experiment completed with median_time: 11.966666666666667 and mean time: 12.075555555555557. The success rate was: 0.6
+Starting new experiment with params algo: fmt, max_vel: 4.667096362107303, max_acc: 2.803816011293412
+Experiment completed with median_time: 11.9 and mean time: 12.073333333333334. The success rate was: 0.64
+Starting new experiment with params algo: rrt, max_vel: 2.500270080334722, max_acc: 1.6670557683293994
+Experiment completed with median_time: 11.85 and mean time: 11.938333333333333. The success rate was: 0.8
+Starting new experiment with params algo: fmt, max_vel: 3.2160757488291822, max_acc: 3.319153805852749
+Experiment completed with median_time: 11.433333333333334 and mean time: 11.443589743589744. The success rate was: 0.52
+Starting new experiment with params algo: fmt, max_vel: 3.899041290346181, max_acc: 1.8045473226059234
+Experiment completed with median_time: 11.766666666666666 and mean time: 11.694999999999999. The success rate was: 0.8
+Starting new experiment with params algo: rrt, max_vel: 3.708714952830487, max_acc: 3.6634285004941183
+Experiment completed with median_time: 11.766666666666666 and mean time: 11.719444444444443. The success rate was: 0.48
+Starting new experiment with params algo: rrt, max_vel: 3.541439459686023, max_acc: 3.506993606668886
+Experiment completed with median_time: 11.1 and mean time: 11.584615384615386. The success rate was: 0.52
+Starting new experiment with params algo: fmt, max_vel: 4.361460876588227, max_acc: 2.7883251312025172
+Experiment completed with median_time: 11.6 and mean time: 11.843589743589744. The success rate was: 0.52
+Starting new experiment with params algo: fmt, max_vel: 3.64646537145131, max_acc: 2.1109705887409236
+Experiment completed with median_time: 12.333333333333334 and mean time: 12.495555555555553. The success rate was: 0.6
+Starting new experiment with params algo: rrt, max_vel: 3.352522247878836, max_acc: 3.783592038443731
+Experiment completed with median_time: 11.633333333333333 and mean time: 12.149999999999999. The success rate was: 0.64
+Starting new experiment with params algo: rrt, max_vel: 4.052647797310032, max_acc: 1.697070149100817
+Experiment completed with median_time: 11.8 and mean time: 12.175438596491228. The success rate was: 0.76
+Starting new experiment with params algo: rrt, max_vel: 4.11706583650568, max_acc: 3.030585709155974
+Experiment completed with median_time: 11.95 and mean time: 12.145833333333332. The success rate was: 0.64
+Starting new experiment with params algo: fmt, max_vel: 4.6330969407406215, max_acc: 2.2510675383593557
+Experiment completed with median_time: 11.6 and mean time: 11.89047619047619. The success rate was: 0.56
+Starting new experiment with params algo: rrt, max_vel: 2.7027215157396616, max_acc: 1.9096563960195159
+Experiment completed with median_time: 11.6 and mean time: 11.782222222222222. The success rate was: 0.6
+Starting new experiment with params algo: rrt, max_vel: 4.236945657705894, max_acc: 2.48757991097279
+Experiment completed with median_time: 11.6 and mean time: 11.76315789473684. The success rate was: 0.76
+Starting new experiment with params algo: rrt, max_vel: 4.986547708599529, max_acc: 3.5095611505907756
+Experiment completed with median_time: 11.75 and mean time: 12.136666666666667. The success rate was: 0.8
+Starting new experiment with params algo: rrt, max_vel: 4.4611305235047025, max_acc: 3.6914785899651283
+Experiment completed with median_time: 11.583333333333332 and mean time: 11.610416666666666. The success rate was: 0.64
+Starting new experiment with params algo: rrt, max_vel: 2.7495937098100534, max_acc: 2.800227687071678
+Experiment completed with median_time: 11.516666666666666 and mean time: 11.640476190476189. The success rate was: 0.56
+Starting new experiment with params algo: fmt, max_vel: 3.96095722372971, max_acc: 3.0637729166712675
+Experiment completed with median_time: 11.8 and mean time: 11.908333333333333. The success rate was: 0.48
+Starting new experiment with params algo: fmt, max_vel: 2.8467652551107183, max_acc: 3.1365247242647474
+Experiment completed with median_time: 11.7 and mean time: 11.619047619047619. The success rate was: 0.56
+Starting new experiment with params algo: fmt, max_vel: 3.453823141777962, max_acc: 2.13556696411687
+Experiment completed with median_time: 11.566666666666666 and mean time: 11.65. The success rate was: 0.64
+Starting new experiment with params algo: fmt, max_vel: 2.667375679231448, max_acc: 2.1035176447868498
+Experiment completed with median_time: 11.6 and mean time: 11.813725490196077. The success rate was: 0.68
+Starting new experiment with params algo: rrt, max_vel: 4.695400479990556, max_acc: 2.9686433388693274
+Experiment completed with median_time: 12.2 and mean time: 12.025490196078431. The success rate was: 0.68
+BEst value is 11.1
+Best params are {'planner_algo': 'rrt', 'max_velocity': 3.541439459686023, 'max_acceleration': 3.506993606668886}

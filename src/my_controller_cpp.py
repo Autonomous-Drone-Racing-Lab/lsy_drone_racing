@@ -26,6 +26,7 @@ Tips:
 """
 
 from __future__ import annotations
+import os
 
 import yaml
 
@@ -55,7 +56,9 @@ class Controller(BaseController):
         initial_info: dict,
         buffer_size: int = 100,
         verbose: bool = False,
-        config = "./config.yaml"
+       # config = "./config.yaml"
+       config = "hp_base_config_optimal.yaml"
+       #config = "test_config.yaml"
     ):
         """Initialization of the controller.
 
@@ -73,7 +76,8 @@ class Controller(BaseController):
             verbose: Turn on and off additional printouts and plots.
         """
         super().__init__(initial_obs, initial_info, buffer_size, verbose)
-            
+        
+
         # load config
         self.config_path = config
         with open(self.config_path, "r") as f:
@@ -89,6 +93,7 @@ class Controller(BaseController):
         self.CTRL_FREQ = initial_info["ctrl_freq"]
         self.initial_obs = initial_obs
         self.VERBOSE = verbose
+        self.VERBOSE = True
         self.BUFFER_SIZE = buffer_size
         self.quadrotor_state = QuadrotorState.INITIAL
         
@@ -107,6 +112,17 @@ class Controller(BaseController):
         # Setup the trajectory generator
         self.traj_generator_cpp = OnlineTrajGenerator(self.start_point, self.goal_point, self.NOMINAL_GATES, self.NOMINAL_OBSTACLES, self.config_path)
         self.traj_generator_cpp.pre_compute_traj(self.takeoff_time)
+
+       
+        # save tra
+        # traj = self.traj_generator_cpp.get_planned_traj()
+        # import pickle
+        # trajs = []
+        # if os.path.exists("traj.pkl"):
+        #     # delte the file
+        #     os.remove("traj.pkl")
+        # trajs.append(traj)
+        # pickle.dump(trajs, open("traj.pkl", "wb"))
 
         if self.VERBOSE:
             traj = self.traj_generator_cpp.get_planned_traj()
@@ -182,9 +198,11 @@ class Controller(BaseController):
             if current_target_gate_in_range:
                 self.gate_update_info[current_target_gate_id] = current_target_gate_pos
             
-            pos_updated = self.traj_generator_cpp.update_gate_pos(current_target_gate_id, current_target_gate_pos, current_drone_pos, current_target_gate_in_range, ep_time)
-            if pos_updated: # for plotting
-                self.last_traj_recalc_time = ep_time
+            no_recompute = self.config["general_properties"].get("no_recompute", False)
+            if not no_recompute:
+                pos_updated = self.traj_generator_cpp.update_gate_pos(current_target_gate_id, current_target_gate_pos, current_drone_pos, current_target_gate_in_range, ep_time)
+                if pos_updated: # for plotting
+                    self.last_traj_recalc_time = ep_time
         
         # Plot trajectory after recomputation and some time
         if self.VERBOSE and self.last_traj_recalc_time and ep_time - self.last_traj_recalc_time > self.traj_calc_duration:
@@ -193,6 +211,12 @@ class Controller(BaseController):
             traj_positions = traj[:, [0, 3, 6]]
             draw_traj_without_ref(self.initial_info, traj_positions)
             self.last_traj_recalc_time = None
+
+            # store to pickle
+            # import pickle
+            # trajs = pickle.load(open("traj.pkl", "rb"))
+            # trajs.append(traj)
+            # pickle.dump(trajs, open("traj.pkl", "wb"))
 
 
         if self.quadrotor_state == QuadrotorState.INITIAL:
@@ -291,6 +315,10 @@ class Controller(BaseController):
             # Calculate new initial trajectory
             self.traj_generator_cpp = OnlineTrajGenerator(self.start_point, self.goal_point, self.NOMINAL_GATES, self.NOMINAL_OBSTACLES, self.config_path)
             self.traj_generator_cpp.pre_compute_traj(self.takeoff_time)
+            self.trajs.append(self.traj_generator_cpp.get_planned_traj())
+            # save traj
+            traj_np = np.array(self.trajs)
+            np.save("traj.npy", traj_np)
 
             if self.VERBOSE:
                 traj = self.traj_generator_cpp.get_planned_traj()

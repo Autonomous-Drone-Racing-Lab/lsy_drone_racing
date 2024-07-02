@@ -86,7 +86,7 @@ general_properties:
   takeoff_height: 0.15
   multi_episode: false
   learn_from_history: false
-  vis_experiment: true
+  vis_experiment: false
 
 
 # In the world properties, we define how our reprsentation of the world in code should look like
@@ -104,20 +104,20 @@ path_planner_properties:
   time_limit_online: 0.5 # time we give the planner to recompute a path during flight
   time_limit_offline: 1.5 # Time we give the planner to compute a path before flight
   optimality_threshold_percentage: 0.05 # value for ompl, we preemtively stop planning if path diverges from straight line path by less than 5%
-  checkpoint_gate_offset: 0.05 # we place additional checkpoints before and after each gate, this gives the distance
+  checkpoint_gate_offset: 0.1 # we place additional checkpoints before and after each gate, this gives the distance
   range: 0.7 # max length of straight line distance used in RRT* algorithm
-  min_dist_check_traj_collision: 0.05 # this is a custom inflation radius we use to check a trajectory for collision once we have new gate informatio, one strategy is to make this a bit smaller than the original ones
+  min_dist_check_traj_collision: 0.1 # this is a custom inflation radius we use to check a trajectory for collision once we have new gate informatio, one strategy is to make this a bit smaller than the original ones
   path_simplification: ompl # simplification method ompl works the best other values are none, and custom
   recalculate_online: False # For sim purpose whether we block the main thread during recomputation
   advance_for_calculation: False # For sim purpose, whether we advance trajectory for traj calculation time
   can_pass_gate: true # whether our trajectory can pass gates, i.e. fly through a gates and back through it
-  planner: "rrt"
+  planner: "fmt"
 
 trajectory_generator_properties:
   type: optimal # optimal works best, other values are snap (minimum snap trajectory), spline
   max_time: 12 # only important for spline. In spline we assume same distance passed in same times, this is the time for the trajectory and timestamps are derived accordingly
-  max_velocity: 2.5 # max velocity in each axis of the drone
-  max_acceleration: 1.5 # max acceleration in each axis of the drone
+  max_velocity: 4.0 # max velocity in each axis of the drone
+  max_acceleration: 2.0 # max acceleration in each axis of the drone
   sampling_interval: 0.05 # How granular the trajectory is sampled
 
   max_traj_divergence: 0.001 # How much the trajectory is maximum allowed to diverge from the planned path (only relevant for optimal time parametization)
