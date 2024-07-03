@@ -243,9 +243,10 @@ class Controller(BaseController):
                 desired_pos = np.array([traj_sample[0], traj_sample[3], traj_sample[6]])
                 desired_vel = np.array([traj_sample[1], traj_sample[4], traj_sample[7]])
                 desired_acc = np.array([traj_sample[2], traj_sample[5], traj_sample[8]])
+                yaw = traj_sample[9] if len(traj_sample) == 11 else 0
                 command_type = Command.FULLSTATE
                 target_rpy_rates = np.zeros(3)
-                args = [desired_pos, desired_vel, desired_acc, 0, target_rpy_rates, ep_time]
+                args = [desired_pos, desired_vel, desired_acc, yaw, target_rpy_rates, ep_time]
         elif self.quadrotor_state == QuadrotorState.LANDING:
             command_type = Command.LAND
             args = [0.0, 2.0]

@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 def main():
     """Run the simulation N times and save the results as 'submission.csv'."""
-    n_runs = 100
+    n_runs = 50
     controller = "src/my_controller_cpp.py"
     #controller = "examples/controller.py"
     ep_times = simulate(config="config/level3.yaml", controller=controller,n_runs=n_runs, gui=False)

@@ -39,7 +39,7 @@ def objective(trial):
 
     
     max_vel = trial.suggest_float("max_velocity", 4.3, 5.5)
-    max_acc = trial.suggest_float("max_acceleration", 2.2, 3.0)
+    max_acc = trial.suggest_float("max_acceleration", 2.5, 3.5)
   
     controller_config = create_config(config, TEMP_DIR, max_vel, max_acc)
 

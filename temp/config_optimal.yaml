@@ -162,8 +162,8 @@ general_properties:
   vis_experiment: false
 path_planner_properties:
   advance_for_calculation: false
-  can_pass_gate: true
-  checkpoint_gate_offset: 0.1
+  can_pass_gate: false
+  checkpoint_gate_offset: 0.2
   min_dist_check_traj_collision: 0.1
   optimality_threshold_percentage: 0.05
   path_simplification: ompl
@@ -173,10 +173,10 @@ path_planner_properties:
   time_limit_offline: 1.5
   time_limit_online: 0.5
 trajectory_generator_properties:
-  max_acceleration: 2.879479108146063
+  max_acceleration: 2.6764783860080845
   max_time: 12
   max_traj_divergence: 0.001
-  max_velocity: 5.459976924912872
+  max_velocity: 5.113619407326644
   prepend_traj_time: 3
   sampling_interval: 0.05
   type: optimal
