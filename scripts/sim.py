@@ -29,18 +29,20 @@ from lsy_drone_racing.utils import load_controller
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from src.experiment_trakcer import ExperimentTracker
+
 
 logger = logging.getLogger(__name__)
 
 
 def simulate(
     config: str = "config/level3.yaml",
-   controller: str = "src/my_controller_cpp.py",
-   # controller: str = "examples/controller.py",
+    controller: str = "src/my_controller_cpp.py",
+    #controller: str = "examples/controller.py",
     n_runs: int = 1,
     gui: bool = True,
     terminate_on_lap: bool = True,
-    controller_config: str = None
+    controller_config: str = "hp_base_config_optimal.yaml"
 ) -> list[float]:
     """Evaluate the drone controller over multiple episodes.
 
@@ -91,8 +93,11 @@ def simulate(
     }
     ep_times = []
 
+    experiment_tracker = ExperimentTracker()
+
     # Run the episodes.
     for i in range(n_runs):
+        experiment_tracker.add_experiment()
         try:
             ep_start = time.time()
             done = False
@@ -108,7 +113,7 @@ def simulate(
             if controller_config is None:
                 ctrl = ctrl_class(vicon_obs, info, verbose=config.verbose)
             else:
-                ctrl = ctrl_class(vicon_obs, info, verbose=config.verbose, config=controller_config)
+                ctrl = ctrl_class(vicon_obs, info, verbose=config.verbose, config=controller_config, experiment_tracker=experiment_tracker)
 
             gui_timer = p.addUserDebugText("", textPosition=[0, 0, 1], physicsClientId=env.PYB_CLIENT)
             i = 0
@@ -173,6 +178,9 @@ def simulate(
 
     # Close the environment
     env.close()
+
+    out_path = "experiments.pkl"
+    experiment_tracker.save_experiment(out_path)
     return ep_times
 
 

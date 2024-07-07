@@ -36,7 +36,6 @@ from lsy_drone_racing.command import Command
 from lsy_drone_racing.controller import BaseController
 from lsy_drone_racing.utils import draw_traj_without_ref, remove_trajectory
 from online_traj_planner import OnlineTrajGenerator # c++ binding
-from src.experiment_trakcer import ExperimentTracker
 from enum import Enum
 
 class QuadrotorState(Enum):
@@ -57,8 +56,9 @@ class Controller(BaseController):
         buffer_size: int = 100,
         verbose: bool = False,
        # config = "./config.yaml"
-       config = "hp_base_config_optimal.yaml"
+       config = "hp_base_config_optimal.yaml",
        #config = "test_config.yaml"
+       experiment_tracker = None
     ):
         """Initialization of the controller.
 
@@ -76,7 +76,6 @@ class Controller(BaseController):
             verbose: Turn on and off additional printouts and plots.
         """
         super().__init__(initial_obs, initial_info, buffer_size, verbose)
-        
 
         # load config
         self.config_path = config
@@ -130,8 +129,10 @@ class Controller(BaseController):
             draw_traj_without_ref(initial_info, traj_positions)
 
         # Experiment tracker
-        self.experiment_tracker = ExperimentTracker()
-        self.experiment_tracker.add_experiment()
+        #self.experiment_tracker = ExperimentTracker()
+        #self.experiment_tracker.add_experiment()
+        
+        self.experiment_tracker = experiment_tracker
 
         # Append extra info to scenario
         additional_static_obstacles = self.config["additional_statics_obstacles"]
@@ -182,6 +183,9 @@ class Controller(BaseController):
         current_target_gate_id = info.get("current_target_gate_id", None)
         current_target_gate_in_range = info.get("current_target_gate_in_range", None)
 
+        if self.experiment_tracker is not None:
+            self.experiment_tracker.add_drone_obs(current_drone_pos, ep_time)
+
         if not(current_target_gate_pos != None and current_target_gate_id != None and current_target_gate_in_range != None):
             pass
         else:
@@ -192,7 +196,7 @@ class Controller(BaseController):
             if current_target_gate_id != self.last_gate_id:
                 self.last_gate_id = current_target_gate_id
                 self.last_gate_change_time = ep_time
-                self.experiment_tracker.add_gate_passed()
+                # self.experiment_tracker.add_gate_passed()
             
             # For history tracking, i.e. storing gate positions at level 2
             if current_target_gate_in_range:
@@ -238,8 +242,8 @@ class Controller(BaseController):
                 self.quadrotor_state = QuadrotorState.LANDING
             else:
                 traj_sample = self.traj_generator_cpp.sample_traj(ep_time)
-                self.experiment_tracker.add_drone_obs(current_drone_pos)
-                self.experiment_tracker.add_traj_step(traj_sample, ep_time)
+                # self.experiment_tracker.add_drone_obs(current_drone_pos)
+                # self.experiment_tracker.add_traj_step(traj_sample, ep_time)
                 desired_pos = np.array([traj_sample[0], traj_sample[3], traj_sample[6]])
                 desired_vel = np.array([traj_sample[1], traj_sample[4], traj_sample[7]])
                 desired_acc = np.array([traj_sample[2], traj_sample[5], traj_sample[8]])
@@ -301,39 +305,42 @@ class Controller(BaseController):
             re-plan.
 
         """
-        if self.config["general_properties"]["vis_experiment"]:
-            self.experiment_tracker.plot_last_experiment()
+        #! Learning does hot happend because we are using either level0 or level3
+        pass
+        
+        # if self.config["general_properties"]["vis_experiment"]:
+        #     self.experiment_tracker.plot_last_experiment()
 
 
-        if self.config["general_properties"]["multi_episode"]:
-            if self.config["learn_from_history"]["multi_episode"]:
-                # update gate pos from history
-                for key, value in self.gate_update_info.items():
-                    self.NOMINAL_GATES[key] = value
-                self.gate_update_info = {}
+        # if self.config["general_properties"]["multi_episode"]:
+        #     if self.config["learn_from_history"]["multi_episode"]:
+        #         # update gate pos from history
+        #         for key, value in self.gate_update_info.items():
+        #             self.NOMINAL_GATES[key] = value
+        #         self.gate_update_info = {}
                 
-                # update obstacle pos from history
-                for key, value in self.obstacle_update_info.items():
-                    self.NOMINAL_OBSTACLES[key] = value
-                self.obstacle_update_info = {}
+        #         # update obstacle pos from history
+        #         for key, value in self.obstacle_update_info.items():
+        #             self.NOMINAL_OBSTACLES[key] = value
+        #         self.obstacle_update_info = {}
             
-            # Calculate new initial trajectory
-            self.traj_generator_cpp = OnlineTrajGenerator(self.start_point, self.goal_point, self.NOMINAL_GATES, self.NOMINAL_OBSTACLES, self.config_path)
-            self.traj_generator_cpp.pre_compute_traj(self.takeoff_time)
-            self.trajs.append(self.traj_generator_cpp.get_planned_traj())
-            # save traj
-            traj_np = np.array(self.trajs)
-            np.save("traj.npy", traj_np)
+        #     # Calculate new initial trajectory
+        #     self.traj_generator_cpp = OnlineTrajGenerator(self.start_point, self.goal_point, self.NOMINAL_GATES, self.NOMINAL_OBSTACLES, self.config_path)
+        #     self.traj_generator_cpp.pre_compute_traj(self.takeoff_time)
+        #     self.trajs.append(self.traj_generator_cpp.get_planned_traj())
+        #     # save traj
+        #     traj_np = np.array(self.trajs)
+        #     np.save("traj.npy", traj_np)
 
-            if self.VERBOSE:
-                traj = self.traj_generator_cpp.get_planned_traj()
-                traj_positions = traj[:, [0, 3, 6]]
-                draw_traj_without_ref(self.initial_info, traj_positions)
+        #     if self.VERBOSE:
+        #         traj = self.traj_generator_cpp.get_planned_traj()
+        #         traj_positions = traj[:, [0, 3, 6]]
+        #         draw_traj_without_ref(self.initial_info, traj_positions)
 
-            # Append extra info to scenario
-            additional_static_obstacles = self.config["additional_statics_obstacles"]
-            self.NOMINAL_OBSTACLES.extend(additional_static_obstacles)
+        #     # Append extra info to scenario
+        #     additional_static_obstacles = self.config["additional_statics_obstacles"]
+        #     self.NOMINAL_OBSTACLES.extend(additional_static_obstacles)
 
-            self.last_traj_recalc_time = None
-            self.last_gate_change_time = 0
-            self.last_gate_id = 0
+        #     self.last_traj_recalc_time = None
+        #     self.last_gate_change_time = 0
+        #     self.last_gate_id = 0

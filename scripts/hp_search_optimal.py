@@ -28,7 +28,8 @@ def create_config(config, temp_dir, max_vel, max_acc):
 
 
 def objective(trial):
-    CONFIG_PATH = "./hp_base_config_optimal.yaml"
+    CONFIG_PATH = "./hp_base_config_optimal_no_gate_pass.yaml"
+    #CONFIG_PATH = "./hp_base_config_optimal.yaml"
     TEMP_DIR = "./temp"
     controller = "src/my_controller_cpp.py"
     task_config = "config/level1.yaml"
@@ -38,8 +39,8 @@ def objective(trial):
         config = yaml.safe_load(file)
 
     
-    max_vel = trial.suggest_float("max_velocity", 4.3, 5.5)
-    max_acc = trial.suggest_float("max_acceleration", 2.5, 3.5)
+    max_vel = trial.suggest_float("max_velocity", 4.0, 4.7)
+    max_acc = trial.suggest_float("max_acceleration", 2.7, 3.2)
   
     controller_config = create_config(config, TEMP_DIR, max_vel, max_acc)
 
@@ -64,7 +65,8 @@ def objective(trial):
 
 if __name__ == "__main__":
 
-    log_path = "temp/hp_search_optimal.log"
+    log_path = "temp/hp_search_optimal_no_gate_pass.log"
+    #log_path = "temp/hp_search_optimal.log"
     file_handler = logging.FileHandler(log_path, mode="w")
     console_handler = logging.StreamHandler(stream=sys.stdout)
     logger.addHandler(file_handler)

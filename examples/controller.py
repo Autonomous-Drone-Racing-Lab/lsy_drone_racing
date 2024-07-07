@@ -109,7 +109,7 @@ class Controller(BaseController):
         waypoints.append([gates[1][0] - 0.3, gates[1][1] - 0.2, z_high])
         waypoints.append([gates[1][0] + 0.2, gates[1][1] + 0.2, z_high])
         waypoints.append([gates[2][0], gates[2][1] - 0.4, z_low])
-        waypoints.append([gates[2][0], gates[2][1] + 0.1, z_low])
+        waypoints.append([gates[2][0], gates[2][1] + 0.2, z_low])
         waypoints.append([gates[2][0], gates[2][1] + 0.1, z_high + 0.2])
         waypoints.append([gates[3][0], gates[3][1] + 0.1, z_high])
         waypoints.append([gates[3][0], gates[3][1] - 0.1, z_high + 0.1])
