@@ -5,13 +5,10 @@ import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from src.experiment_trakcer import Experiment
-from src.map.map import Map
-from src.utils.config_reader import ConfigReader
+from src.visualization_utils.map.map import Map
+from src.visualization_utils.utils.config_reader import ConfigReader
 import numpy as np
-import matplotlib.pyplot as plt
-import yaml
-from src.utils.types import Gate, Obstacle
+from src.visualization_utils.utils.types import Gate, Obstacle
 import re
 
 def parse_objects(path):
@@ -45,6 +42,7 @@ if __name__ == "__main__":
 
     nominal_gates_pos_and_type = parse_objects("./path_segments/gates.txt")
     nomial_obstacle_pos = parse_objects("./path_segments/obstacles.txt")
+    checkpoints = parse_checkpoints("./path_segments/checkpoints.txt")
 
     # create map and parse objects
     lower_bound = np.array([-2, -2, 0])
@@ -64,40 +62,16 @@ if __name__ == "__main__":
     map.parse_obstacles(obstacles)
 
     import pickle
-    experiment_file = "experiments.pkl"
-    with open(experiment_file, "rb") as f:
-        experiments = pickle.load(f)
-        if isinstance(experiments[0], dict):
-            print(f"Restoring from dirct")
-            experiments = [Experiment.from_dict(experiment) for experiment in experiments]
+    traj_file = "traj.pkl"
+    with open(traj_file, "rb") as f:
+        trajs = pickle.load(f)
 
-    
-    ax = map.create_map_sized_figure()
+    paths = []
+    for traj in trajs:
+        x_idx = 0
+        y_idx = 3
+        z_idx = 6
+        path = traj[:, [x_idx, y_idx, z_idx]]
+        paths.append(path)
 
-    show_checkpoints = True
-    if show_checkpoints:
-        checkpoints = parse_checkpoints("./path_segments/checkpoints.txt")
-        for checkpoint in checkpoints[1:-1]:
-            ax.scatter(checkpoint[0], checkpoint[1], checkpoint[2], c='r', marker='x')
-
-
-    # set camera position, looo along x axis 45 degree from top
-    #ax.view_init(elev=55, azim=0)
-    # set top down view
-    ax.view_init(elev=90, azim=0)
-
-    map.add_objects_to_plot(ax)
-    for experiment in experiments:
-        obs = experiment.get_drone_pos()
-        ax.plot(obs[:, 0], obs[:, 1], obs[:, 2])
-
-    save_path = "documentation/drawing/experiment_optim_checkpoints"
-    save_png = save_path + ".png"
-    save_eps = save_path + ".eps"
-    save_exp = save_path + ".pkl"
-    plt.savefig(save_png, bbox_inches='tight')
-    plt.savefig(save_eps, bbox_inches='tight', format='eps')
-    # copy the experiment file to the documentation folder
-    import shutil
-    shutil.copyfile(experiment_file, save_exp)
-    # plt.show()
+    map.draw_scene(paths)

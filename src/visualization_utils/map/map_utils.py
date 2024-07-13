@@ -9,13 +9,6 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
 
 class Ray:
-    """
-    Represents a ray in 3D space.
-
-    Attributes:
-        start (np.ndarray): The starting point of the ray.
-        end (np.ndarray): The ending point of the ray.
-    """
 
     def __init__(self, start: np.ndarray, end: np.ndarray):
         self.start = start

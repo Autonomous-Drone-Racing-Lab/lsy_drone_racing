@@ -3,8 +3,8 @@ import random
 import sys
 import os
 
-from src.utils.config_reader import ConfigReader
-from src.utils.types import Gate, Obstacle
+from src.visualization_utils.utils.config_reader import ConfigReader
+from src.visualization_utils.utils.types import Gate, Obstacle
 if not os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')) in sys.path:
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 

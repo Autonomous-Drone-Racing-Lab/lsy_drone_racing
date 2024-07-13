@@ -1,6 +1,6 @@
 import numpy as np
-from src.utils.config_reader import ConfigReader
-from src.utils.types import Gate
+from src.visualization_utils.utils.config_reader import ConfigReader
+from src.visualization_utils.utils.types import Gate
 
 def calc_gate_center_and_normal(gate: Gate):
     config = ConfigReader.get()

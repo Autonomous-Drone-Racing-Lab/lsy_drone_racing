@@ -5,12 +5,11 @@ import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from src.map.map import Map
-from src.utils.config_reader import ConfigReader
+from src.visualization_utils.map.map import Map
+from src.visualization_utils.utils.config_reader import ConfigReader
 import numpy as np
-import matplotlib.pyplot as plt
 import yaml
-from src.utils.types import Gate, Obstacle
+from src.visualization_utils.utils.types import Gate, Obstacle
 
 
 if __name__ == "__main__":

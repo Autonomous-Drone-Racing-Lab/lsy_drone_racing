@@ -1,35 +1,5 @@
-"""Write your control strategy.
-
-Then run:
-
-    $ python scripts/sim --config config/getting_started.yaml
-
-Tips:
-    Search for strings `INSTRUCTIONS:` and `REPLACE THIS (START)` in this file.
-
-    Change the code between the 5 blocks starting with
-        #########################
-        # REPLACE THIS (START) ##
-        #########################
-    and ending with
-        #########################
-        # REPLACE THIS (END) ####
-        #########################
-    with your own code.
-
-    They are in methods:
-        1) __init__
-        2) compute_control
-        3) step_learn (optional)
-        4) episode_learn (optional)
-
-"""
-
 from __future__ import annotations
-import os
-
 import yaml
-
 import numpy as np
 
 from lsy_drone_racing.command import Command
@@ -62,11 +32,6 @@ class Controller(BaseController):
     ):
         """Initialization of the controller.
 
-        INSTRUCTIONS:
-            The controller's constructor has access the initial state `initial_obs` and the a priori
-            infromation contained in dictionary `initial_info`. Use this method to initialize
-            constants, counters, pre-plan trajectories, etc.
-
         Args:
             initial_obs: The initial observation of the quadrotor's state
                 [x, x_dot, y, y_dot, z, z_dot, phi, theta, psi, p, q, r].
@@ -74,6 +39,8 @@ class Controller(BaseController):
                 'nominal_physical_parameters', 'nominal_gates_pos_and_type', etc.
             buffer_size: Size of the data buffers used in method `learn()`.
             verbose: Turn on and off additional printouts and plots.
+            config: Path to the configuration file.
+            experiment_tracker: Optional experiment tracker object to provide for collecting results over many runs
         """
         super().__init__(initial_obs, initial_info, buffer_size, verbose)
 
@@ -112,32 +79,14 @@ class Controller(BaseController):
         self.traj_generator_cpp = OnlineTrajGenerator(self.start_point, self.goal_point, self.NOMINAL_GATES, self.NOMINAL_OBSTACLES, self.config_path)
         self.traj_generator_cpp.pre_compute_traj(self.takeoff_time)
 
-       
-        # save tra
-        # traj = self.traj_generator_cpp.get_planned_traj()
-        # import pickle
-        # trajs = []
-        # if os.path.exists("traj.pkl"):
-        #     # delte the file
-        #     os.remove("traj.pkl")
-        # trajs.append(traj)
-        # pickle.dump(trajs, open("traj.pkl", "wb"))
-
         if self.VERBOSE:
             traj = self.traj_generator_cpp.get_planned_traj()
             traj_positions = traj[:, [0, 3, 6]]
             draw_traj_without_ref(initial_info, traj_positions)
-
-        # Experiment tracker
-        #self.experiment_tracker = ExperimentTracker()
-        #self.experiment_tracker.add_experiment()
         
         self.experiment_tracker = experiment_tracker
 
-        # Append extra info to scenario
-        additional_static_obstacles = self.config["additional_statics_obstacles"]
-        self.NOMINAL_OBSTACLES.extend(additional_static_obstacles)
-
+        # For visualizing and tracking gate changes
         self.last_traj_recalc_time = None
         self.last_gate_change_time = 0
         self.last_gate_id = 0
@@ -157,11 +106,6 @@ class Controller(BaseController):
     ) -> tuple[Command, list]:
         """Pick command sent to the quadrotor through a Crazyswarm/Crazyradio-like interface.
 
-        INSTRUCTIONS:
-            Re-implement this method to return the target position, velocity, acceleration,
-            attitude, and attitude rates to be sent from Crazyswarm to the Crazyflie using, e.g., a
-            `cmdFullState` call.
-
         Args:
             ep_time: Episode's elapsed time, in seconds.
             obs: The quadrotor's Vicon data [x, 0, y, 0, z, 0, phi, theta, psi, 0, 0, 0].
@@ -173,10 +117,6 @@ class Controller(BaseController):
         Returns:
             The command type and arguments to be sent to the quadrotor. See `Command`.
         """
-       
-        #########################
-        # REPLACE THIS (START) ##
-        ########################
         
         current_drone_pos = np.array([obs[0], obs[2], obs[4]])
         current_target_gate_pos = info.get("current_target_gate_pos", None)
@@ -198,10 +138,6 @@ class Controller(BaseController):
                 self.last_gate_change_time = ep_time
                 # self.experiment_tracker.add_gate_passed()
             
-            # For history tracking, i.e. storing gate positions at level 2
-            if current_target_gate_in_range:
-                self.gate_update_info[current_target_gate_id] = current_target_gate_pos
-            
             no_recompute = self.config["general_properties"].get("no_recompute", False)
             if not no_recompute:
                 pos_updated = self.traj_generator_cpp.update_gate_pos(current_target_gate_id, current_target_gate_pos, current_drone_pos, current_target_gate_in_range, ep_time)
@@ -216,13 +152,7 @@ class Controller(BaseController):
             draw_traj_without_ref(self.initial_info, traj_positions)
             self.last_traj_recalc_time = None
 
-            # store to pickle
-            # import pickle
-            # trajs = pickle.load(open("traj.pkl", "rb"))
-            # trajs.append(traj)
-            # pickle.dump(trajs, open("traj.pkl", "wb"))
-
-
+        # Calculate compute command based on current flight state
         if self.quadrotor_state == QuadrotorState.INITIAL:
             command_type = Command.TAKEOFF
             args = [self.takeoff_height, self.takeoff_time]
@@ -242,8 +172,6 @@ class Controller(BaseController):
                 self.quadrotor_state = QuadrotorState.LANDING
             else:
                 traj_sample = self.traj_generator_cpp.sample_traj(ep_time)
-                # self.experiment_tracker.add_drone_obs(current_drone_pos)
-                # self.experiment_tracker.add_traj_step(traj_sample, ep_time)
                 desired_pos = np.array([traj_sample[0], traj_sample[3], traj_sample[6]])
                 desired_vel = np.array([traj_sample[1], traj_sample[4], traj_sample[7]])
                 desired_acc = np.array([traj_sample[2], traj_sample[5], traj_sample[8]])
@@ -308,39 +236,4 @@ class Controller(BaseController):
         #! Learning does hot happend because we are using either level0 or level3
         pass
         
-        # if self.config["general_properties"]["vis_experiment"]:
-        #     self.experiment_tracker.plot_last_experiment()
-
-
-        # if self.config["general_properties"]["multi_episode"]:
-        #     if self.config["learn_from_history"]["multi_episode"]:
-        #         # update gate pos from history
-        #         for key, value in self.gate_update_info.items():
-        #             self.NOMINAL_GATES[key] = value
-        #         self.gate_update_info = {}
-                
-        #         # update obstacle pos from history
-        #         for key, value in self.obstacle_update_info.items():
-        #             self.NOMINAL_OBSTACLES[key] = value
-        #         self.obstacle_update_info = {}
-            
-        #     # Calculate new initial trajectory
-        #     self.traj_generator_cpp = OnlineTrajGenerator(self.start_point, self.goal_point, self.NOMINAL_GATES, self.NOMINAL_OBSTACLES, self.config_path)
-        #     self.traj_generator_cpp.pre_compute_traj(self.takeoff_time)
-        #     self.trajs.append(self.traj_generator_cpp.get_planned_traj())
-        #     # save traj
-        #     traj_np = np.array(self.trajs)
-        #     np.save("traj.npy", traj_np)
-
-        #     if self.VERBOSE:
-        #         traj = self.traj_generator_cpp.get_planned_traj()
-        #         traj_positions = traj[:, [0, 3, 6]]
-        #         draw_traj_without_ref(self.initial_info, traj_positions)
-
-        #     # Append extra info to scenario
-        #     additional_static_obstacles = self.config["additional_statics_obstacles"]
-        #     self.NOMINAL_OBSTACLES.extend(additional_static_obstacles)
-
-        #     self.last_traj_recalc_time = None
-        #     self.last_gate_change_time = 0
-        #     self.last_gate_id = 0
+      

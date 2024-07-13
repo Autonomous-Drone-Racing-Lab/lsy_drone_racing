@@ -5,12 +5,10 @@ import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from src.map.map import Map
-from src.utils.config_reader import ConfigReader
+from src.visualization_utils.map.map import Map
+from src.visualization_utils.utils.config_reader import ConfigReader
 import numpy as np
-import matplotlib.pyplot as plt
-import yaml
-from src.utils.types import Gate, Obstacle
+from src.visualization_utils.utils.types import Gate, Obstacle
 import re
 
 def parse_objects(path):
@@ -63,17 +61,15 @@ if __name__ == "__main__":
     map.parse_gates(gates)
     map.parse_obstacles(obstacles)
 
-    import pickle
-    traj_file = "traj.pkl"
-    with open(traj_file, "rb") as f:
-        trajs = pickle.load(f)
-
-    paths = []
-    for traj in trajs:
-        x_idx = 0
-        y_idx = 3
-        z_idx = 6
-        path = traj[:, [x_idx, y_idx, z_idx]]
-        paths.append(path)
-
-    map.draw_scene(paths)
+    path_directory_path = "path_segments"
+    for file in sorted(os.listdir(path_directory_path)):
+        if not file.startswith("path"):
+            continue
+        path_file = os.path.join(path_directory_path, file)
+        # path is stored as list of points coordinates comma separated
+        with open(path_file, "r") as f:
+            path = f.readlines()
+            path = [point.strip().split(" ") for point in path]
+            path = np.array(path, dtype=float)
+        # plot map
+        map.draw_scene(path=path, checkpoints=checkpoints)
