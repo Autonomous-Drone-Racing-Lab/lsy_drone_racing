@@ -4,3 +4,6 @@
 submission.csv
 logs
 path_segments/
+temp/
+lsy_drone_racing/
+*.pkl
