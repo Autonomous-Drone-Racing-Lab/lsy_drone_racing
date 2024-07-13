@@ -122,8 +122,8 @@ quadrotor_config:
       high: 0.15
     obstacles:
       distrib: "uniform"
-      low: -0.0
-      high: 0.0
+      low: -0.15
+      high: 0.15
 
   # Constraints
   constraints:

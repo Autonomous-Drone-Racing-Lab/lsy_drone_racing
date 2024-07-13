@@ -84,7 +84,7 @@ class Controller(BaseController):
         
         self.takeoff_height = self.config["general_properties"]["takeoff_height"]
         self.takeoff_time = self.config["general_properties"]["takeoff_time"]
-        self.traj_calc_duration = 0.2
+        self.traj_calc_duration = 0.02
 
         # Save environment and control parameters.
         self.initial_info = initial_info
