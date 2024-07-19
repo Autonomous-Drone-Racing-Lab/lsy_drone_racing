@@ -105,6 +105,8 @@ class OBB:
             xs, ys, zs = zip(*edge)
             ax.add_collection3d(Poly3DCollection([list(zip(xs, ys, zs))], facecolors=face_color, linewidths=1, edgecolors=edge_color, alpha=.25))
 
+    def plot_2d(self, ax):
+        
 
 class Object:
     def __init__(self):

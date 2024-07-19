@@ -18,8 +18,8 @@ def main():
     n_runs = 100
     controller = "src/my_controller_cpp.py"
     #controller = "examples/controller.py"
-    controller_config: str = "hp_base_config_optimal.yaml"
-    ep_times = simulate(config="config/level3.yaml", controller=controller,n_runs=n_runs, gui=True, controller_config=controller_config)
+    controller_config: str = "config.yaml"
+    ep_times = simulate(config="config/level3.yaml", controller=controller,n_runs=n_runs, gui=False, controller_config=controller_config)
     # Log the number of failed runs if any
 
     if failed := [x for x in ep_times if x is None]:

@@ -2,14 +2,15 @@
 import random
 import sys
 import os
-
-from src.visualization_utils.utils.config_reader import ConfigReader
-from src.visualization_utils.utils.types import Gate, Obstacle
 if not os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')) in sys.path:
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
+from src.visualization_utils.map.map_utils import Object, Ray
+from src.visualization_utils.utils.config_reader import ConfigReader
+from src.visualization_utils.utils.types import Gate, Obstacle
+
+
 import numpy as np
-from src.map.map_utils import Object, Ray
 import matplotlib.pyplot as plt
 from rtree import index
 from typing import List
@@ -144,6 +145,10 @@ class Map:
     def add_objects_to_plot(self, ax):
         for obb in self.obbs:
             obb.plot(ax)
+    
+    def add_objects_to_plot_2d(self, ax):
+        for obb in self.obbs:
+            obb.plot_2d(ax)
 
     def easy_plot(self):
         ax = self.create_map_sized_figure()

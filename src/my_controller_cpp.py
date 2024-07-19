@@ -17,8 +17,6 @@ class QuadrotorState(Enum):
 
 
 class Controller(BaseController):
-    """Template controller class."""
-
     def __init__(
         self,
         initial_obs: np.ndarray,

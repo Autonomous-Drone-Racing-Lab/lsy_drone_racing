@@ -40,6 +40,15 @@ def parse_checkpoints(path):
             checkpoints.append(info)
     return np.array(checkpoints)
 
+def parse_experiments(path):
+    with open(path, "rb") as f:
+        experiments = pickle.load(f)
+        if isinstance(experiments[0], dict):
+            print(f"Restoring from dirct")
+            experiments = [Experiment.from_dict(experiment) for experiment in experiments]
+
+    return experiments
+
 
 if __name__ == "__main__":
     config_path = "./config.yaml"
@@ -66,12 +75,12 @@ if __name__ == "__main__":
     map.parse_obstacles(obstacles)
 
     import pickle
-    experiment_file = "/home/tim/code/lsy_drone_racing/documentation/drawing/experiment_optim_short.pkl"
-    with open(experiment_file, "rb") as f:
-        experiments = pickle.load(f)
-        if isinstance(experiments[0], dict):
-            print(f"Restoring from dirct")
-            experiments = [Experiment.from_dict(experiment) for experiment in experiments]
+    experiment_file1 = "/home/tim/code/lsy_drone_racing/documentation/drawing/experiment_optim.pkl"
+    experiment_file2 = "/home/tim/code/lsy_drone_racing/documentation/drawing/experiment_rl.pkl"
+    experiments_1 = parse_experiments(experiment_file1)
+    experiments_2 = parse_experiments(experiment_file2)
+    experiment_1 = experiments_1[0]
+    experiment_2 = experiments_2[0]
 
     
     ax = map.create_map_sized_figure()
@@ -80,13 +89,11 @@ if __name__ == "__main__":
     # remove z label
     ax.set_zlabel('')
 
-    show_checkpoints = False
+    show_checkpoints = True
     if show_checkpoints:
         checkpoints = parse_checkpoints("./path_segments/checkpoints.txt")
         for checkpoint in checkpoints[1:-1]:
             ax.scatter(checkpoint[0], checkpoint[1], checkpoint[2], c='r', marker='x')
-
-        
 
 
     # set camera position, looo along x axis 45 degree from top
@@ -95,19 +102,15 @@ if __name__ == "__main__":
     ax.view_init(elev=90, azim=0)
 
     map.add_objects_to_plot(ax)
-    for experiment in experiments:
+    for experiment in [experiment_1, experiment_2]:
         obs = experiment.get_drone_pos()
-        ax.plot(obs[:, 0], obs[:, 1], obs[:, 2])
+        ax.plot(obs[:, 0], obs[:, 1], obs[:, 2], label="test")
 
+    #ax.legend()
 
-
-    save_path = "/home/tim/code/lsy_drone_racing/documentation/drawing/experiment_optim_short"
+    save_path = "documentation/drawing/comparison"
     save_png = save_path + ".png"
     save_eps = save_path + ".eps"
-    save_exp = save_path + ".pkl"
     plt.savefig(save_png, bbox_inches='tight')
     plt.savefig(save_eps, bbox_inches='tight', format='eps')
-    # copy the experiment file to the documentation folder
-    # import shutil
-    # shutil.copyfile(experiment_file, save_exp)
-    # # plt.show()
+    # plt.show()
