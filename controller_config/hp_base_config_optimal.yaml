@@ -112,7 +112,8 @@ path_planner_properties:
   recalculate_online: False # For sim purpose whether we block the main thread during recomputation
   advance_for_calculation: False # For sim purpose, whether we advance trajectory for traj calculation time
   can_pass_gate: true # whether our trajectory can pass gates, i.e. fly through a gates and back through it
-  planner: "fmt"
+  planner: "fmt" # Type of planner to use
+  samples_fmt: 5000 # Number of samples for FMT* planner
 
 trajectory_generator_properties:
   type: optimal # optimal works best, other values are snap (minimum snap trajectory), spline
