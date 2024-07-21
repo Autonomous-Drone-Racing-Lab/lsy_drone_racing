@@ -1,14 +1,21 @@
+"""Controller implementation in combination with C++ trajectory planner."""
 from __future__ import annotations
-import yaml
+
+from enum import Enum
+from typing import Optional
+
 import numpy as np
+import yaml
+from online_traj_planner import OnlineTrajGenerator  # c++ binding
 
 from lsy_drone_racing.command import Command
 from lsy_drone_racing.controller import BaseController
 from lsy_drone_racing.utils import draw_traj_without_ref, remove_trajectory
-from online_traj_planner import OnlineTrajGenerator # c++ binding
-from enum import Enum
+from src.experiment_trakcer import ExperimentTracker
+
 
 class QuadrotorState(Enum):
+    """Enum class for the quadrotor's state."""
     INITIAL = 0
     TAKEOFF = 1
     FLYING = 2
@@ -17,6 +24,7 @@ class QuadrotorState(Enum):
 
 
 class Controller(BaseController):
+    """Controller implementation in combination with C++ trajectory planner."""
     def __init__(
         self,
         initial_obs: np.ndarray,
@@ -24,9 +32,9 @@ class Controller(BaseController):
         buffer_size: int = 100,
         verbose: bool = False,
        # config = "./config.yaml"
-       config = "hp_base_config_optimal.yaml",
+       config: str = "hp_base_config_optimal.yaml",
        #config = "test_config.yaml"
-       experiment_tracker = None
+       experiment_tracker: Optional[ExperimentTracker] = None
     ):
         """Initialization of the controller.
 
@@ -115,7 +123,6 @@ class Controller(BaseController):
         Returns:
             The command type and arguments to be sent to the quadrotor. See `Command`.
         """
-        
         current_drone_pos = np.array([obs[0], obs[2], obs[4]])
         current_target_gate_pos = info.get("current_target_gate_pos", None)
         current_target_gate_id = info.get("current_target_gate_id", None)
