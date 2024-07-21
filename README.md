@@ -43,7 +43,7 @@ conda install swig
 ./wrapper/build_linux.sh
 ```
 
-Next install the efficient path planner by following the installation tutorial as written in [its repo](EfficientPathPlanner](https://github.com/Autonomous-Drone-Racing-Lab/Efficient-Path-Planner).
+Next install the efficient path planner by following the installation tutorial as written in [its repo](https://github.com/Autonomous-Drone-Racing-Lab/Efficient-Path-Planner).
 
 Finally you can install the lsy_drone_racing package in editable mode from the repository root
 
