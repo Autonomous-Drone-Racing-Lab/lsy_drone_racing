@@ -66,6 +66,7 @@ If everything is installed correctly, this opens the simulator and simulates a d
 All configuration is done via a config file as shown `controller_config/`. Default values are not supported and all values must be set. If unsure just use the values as provided here
 
 ## Execution
-Run the code via `python scripts/sim.py` providing all relevant information as command line arguments. At leas always provide the `config` and the `controller_config`
+Run the code via `python scripts/sim.py` providing all relevant information as command line arguments. The default configurations uses optimized parameters for the level3 environment. If you want to provide your own configurations, you shoud at least provide your own `controller_config` and the environmnent (`config`) that you want to test in.
 
-To test a controller over many runs and collect results, you can use `python scripts/kaggle.py`, where you must add the desired configuration within the file
+
+To test a controller over many runs and collect results, you can use `python scripts/kaggle.py`. This file does not have as nice of a command line interface, rather you must provide all configurations within the variables at the top of the file. The pre-defined config is the same as before (level 3).

@@ -10,6 +10,10 @@ Look for instructions in `README.md` and `edit_this.py`.
 from __future__ import annotations
 
 import logging
+import os
+
+# Fix, so we can import form the src module
+import sys
 import time
 from functools import partial
 from pathlib import Path
@@ -25,12 +29,8 @@ from safe_control_gym.utils.utils import sync
 from lsy_drone_racing.command import apply_sim_command
 from lsy_drone_racing.utils import load_controller
 
-# Fix, so we can import form the src module
-import sys
-import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from src.experiment_trakcer import ExperimentTracker
-
 
 logger = logging.getLogger(__name__)
 
@@ -38,11 +38,10 @@ logger = logging.getLogger(__name__)
 def simulate(
     config: str = "config/level3.yaml",
     controller: str = "src/my_controller_cpp.py",
-    #controller: str = "examples/controller.py",
     n_runs: int = 1,
     gui: bool = True,
     terminate_on_lap: bool = True,
-    controller_config: str = "hp_base_config_optimal.yaml"
+    controller_config: str = "controller_config/hp_base_config_optimal.yaml"
 ) -> list[float]:
     """Evaluate the drone controller over multiple episodes.
 
@@ -52,6 +51,7 @@ def simulate(
         n_runs: The number of episodes.
         gui: Enable/disable the simulation GUI.
         terminate_on_lap: Stop the simulation early when the drone has passed the last gate.
+        controller_config: The path to the controller configuration
 
     Returns:
         A list of episode times.

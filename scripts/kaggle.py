@@ -17,7 +17,6 @@ def main():
     """Run the simulation N times and save the results as 'submission.csv'."""
     n_runs = 100
     controller = "src/my_controller_cpp.py"
-    #controller = "examples/controller.py"
     controller_config: str = "controller_config/hp_base_config_optimal.yaml"
     ep_times = simulate(config="config/level3.yaml", controller=controller,n_runs=n_runs, gui=True, controller_config=controller_config)
     # Log the number of failed runs if any

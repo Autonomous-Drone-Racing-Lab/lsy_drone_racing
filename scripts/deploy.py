@@ -29,8 +29,9 @@ from lsy_drone_racing.vicon import ViconWatcher
 logger = logging.getLogger(__name__)
 
 # Fix, so we can import form the src module
-import sys
 import os
+import sys
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 def create_init_info(
