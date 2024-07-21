@@ -43,7 +43,7 @@ conda install swig
 ./wrapper/build_linux.sh
 ```
 
-Next install the efficient path planner by following the installation tutorial as written in this repo.
+Next install the efficient path planner by following the installation tutorial as written in [its repo](https://github.com/Autonomous-Drone-Racing-Lab/Efficient-Path-Planner).
 
 Finally you can install the lsy_drone_racing package in editable mode from the repository root
 
@@ -67,6 +67,5 @@ All configuration is done via a config file as shown `controller_config/`. Defau
 
 ## Execution
 Run the code via `python scripts/sim.py` providing all relevant information as command line arguments. The default configurations uses optimized parameters for the level3 environment. If you want to provide your own configurations, you shoud at least provide your own `controller_config` and the environmnent (`config`) that you want to test in.
-
 
 To test a controller over many runs and collect results, you can use `python scripts/kaggle.py`. This file does not have as nice of a command line interface, rather you must provide all configurations within the variables at the top of the file. The pre-defined config is the same as before (level 3).
