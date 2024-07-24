@@ -1,4 +1,5 @@
 """Controller implementation in combination with C++ trajectory planner."""
+
 from __future__ import annotations
 
 from enum import Enum
@@ -16,6 +17,7 @@ from src.experiment_trakcer import ExperimentTracker
 
 class QuadrotorState(Enum):
     """Enum class for the quadrotor's state."""
+
     INITIAL = 0
     TAKEOFF = 1
     FLYING = 2
@@ -25,16 +27,17 @@ class QuadrotorState(Enum):
 
 class Controller(BaseController):
     """Controller implementation in combination with C++ trajectory planner."""
+
     def __init__(
         self,
         initial_obs: np.ndarray,
         initial_info: dict,
         buffer_size: int = 100,
         verbose: bool = False,
-       # config = "./config.yaml"
-       config: str = "hp_base_config_optimal.yaml",
-       #config = "test_config.yaml"
-       experiment_tracker: Optional[ExperimentTracker] = None
+        # config = "./config.yaml"
+        config: str = "hp_base_config_optimal.yaml",
+        # config = "test_config.yaml"
+        experiment_tracker: Optional[ExperimentTracker] = None,
     ):
         """Initialization of the controller.
 
@@ -54,7 +57,7 @@ class Controller(BaseController):
         self.config_path = config
         with open(self.config_path, "r") as f:
             self.config = yaml.safe_load(f)
-        
+
         self.takeoff_height = self.config["general_properties"]["takeoff_height"]
         self.takeoff_time = self.config["general_properties"]["takeoff_time"]
         self.traj_calc_duration = 0.02
@@ -65,31 +68,35 @@ class Controller(BaseController):
         self.CTRL_FREQ = initial_info["ctrl_freq"]
         self.initial_obs = initial_obs
         self.VERBOSE = verbose
-        self.VERBOSE = True
         self.BUFFER_SIZE = buffer_size
         self.quadrotor_state = QuadrotorState.INITIAL
-        
 
         # Store a priori scenario information.
         self.NOMINAL_GATES = initial_info["nominal_gates_pos_and_type"]
         self.NOMINAL_OBSTACLES = initial_info["nominal_obstacles_pos"]
         self.GATE_TYPES = initial_info["gate_dimensions"]
         self.start_point = np.array([initial_obs[0], initial_obs[2], self.takeoff_height])
-        self.goal_point = np.array([0, -2, 0.5]) # Hardcoded from the config file
+        self.goal_point = np.array([0, -2, 0.5])  # Hardcoded from the config file
 
         # Store Information for tracking
         self.gate_update_info = {}
         self.obstacle_update_info = {}
 
         # Setup the trajectory generator
-        self.traj_generator_cpp = OnlineTrajGenerator(self.start_point, self.goal_point, self.NOMINAL_GATES, self.NOMINAL_OBSTACLES, self.config_path)
+        self.traj_generator_cpp = OnlineTrajGenerator(
+            self.start_point,
+            self.goal_point,
+            self.NOMINAL_GATES,
+            self.NOMINAL_OBSTACLES,
+            self.config_path,
+        )
         self.traj_generator_cpp.pre_compute_traj(self.takeoff_time)
 
         if self.VERBOSE:
             traj = self.traj_generator_cpp.get_planned_traj()
             traj_positions = traj[:, [0, 3, 6]]
             draw_traj_without_ref(initial_info, traj_positions)
-        
+
         self.experiment_tracker = experiment_tracker
 
         # For visualizing and tracking gate changes
@@ -100,7 +107,6 @@ class Controller(BaseController):
         # Reset counters and buffers.
         self.reset()
         self.episode_reset()
-
 
     def compute_control(
         self,
@@ -131,26 +137,40 @@ class Controller(BaseController):
         if self.experiment_tracker is not None:
             self.experiment_tracker.add_drone_obs(current_drone_pos, ep_time)
 
-        if not(current_target_gate_pos != None and current_target_gate_id != None and current_target_gate_in_range != None):
+        if not (
+            current_target_gate_pos != None
+            and current_target_gate_id != None
+            and current_target_gate_in_range != None
+        ):
             pass
         else:
             # Normalizing such that all obstacles are always grounded
             current_target_gate_pos[2] = 0
-            
+
             # Identify gate passed
             if current_target_gate_id != self.last_gate_id:
                 self.last_gate_id = current_target_gate_id
                 self.last_gate_change_time = ep_time
                 # self.experiment_tracker.add_gate_passed()
-            
+
             no_recompute = self.config["general_properties"].get("no_recompute", False)
             if not no_recompute:
-                pos_updated = self.traj_generator_cpp.update_gate_pos(current_target_gate_id, current_target_gate_pos, current_drone_pos, current_target_gate_in_range, ep_time)
-                if pos_updated: # for plotting
+                pos_updated = self.traj_generator_cpp.update_gate_pos(
+                    current_target_gate_id,
+                    current_target_gate_pos,
+                    current_drone_pos,
+                    current_target_gate_in_range,
+                    ep_time,
+                )
+                if pos_updated:  # for plotting
                     self.last_traj_recalc_time = ep_time
-        
+
         # Plot trajectory after recomputation and some time
-        if self.VERBOSE and self.last_traj_recalc_time and ep_time - self.last_traj_recalc_time > self.traj_calc_duration:
+        if (
+            self.VERBOSE
+            and self.last_traj_recalc_time
+            and ep_time - self.last_traj_recalc_time > self.traj_calc_duration
+        ):
             remove_trajectory()
             traj = self.traj_generator_cpp.get_planned_traj()
             traj_positions = traj[:, [0, 3, 6]]
@@ -226,9 +246,6 @@ class Controller(BaseController):
         """
         pass
 
-        
-
-
     def episode_learn(self):
         """Learning and controller updates called between episodes.
 
@@ -240,5 +257,3 @@ class Controller(BaseController):
         """
         #! Learning does hot happend because we are using either level0 or level3
         pass
-        
-      

@@ -29,10 +29,11 @@ from lsy_drone_racing.vicon import ViconWatcher
 logger = logging.getLogger(__name__)
 
 # Fix, so we can import form the src module
-import os
 import sys
+import os
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 
 def create_init_info(
     env_info: dict,
@@ -86,7 +87,12 @@ def create_init_info(
     return init_info
 
 
-def main(config: str = "config/getting_started.yaml", controller: str = "examples/controller.py"):
+def main(
+    config: str = "config/level0.yaml",
+    controller: str = "src/my_controller_cpp.py",
+    controller_config: str = "controller_config/hp_base_config_optimal_deploy.yaml",
+    # controller: str = "examples/controller.py"
+):
     """Deployment script to run the controller on the real drone."""
     start_time = time.time()
 
@@ -156,7 +162,7 @@ def main(config: str = "config/getting_started.yaml", controller: str = "example
 
     # Create controller
     vicon_obs = drone_pos_and_vel + drone_rot_and_agl_vel
-    ctrl = Controller(vicon_obs, init_info, True)
+    ctrl = Controller(vicon_obs, init_info, verbose=False, config=controller_config)
 
     # Helper parameters
     target_gate_id = 0  # Initial gate.
